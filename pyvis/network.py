@@ -34,6 +34,7 @@ class Network(object):
                  neighborhood_highlight=False,
                  select_menu=False,
                  filter_menu=False,
+                 step_menu=False,
                  bgcolor="#ffffff",
                  font_color=False,
                  layout=None,
@@ -88,6 +89,7 @@ class Network(object):
         self.neighborhood_highlight = neighborhood_highlight
         self.select_menu = select_menu
         self.filter_menu = filter_menu
+        self.step_menu = step_menu
         assert cdn_resources in ["local", "in_line", "remote"], "cdn_resources not in [local, in_line, remote]."
         # path is the root template located in the template_dir
         self.path = "template.html"
@@ -492,6 +494,7 @@ class Network(object):
                                     neighborhood_highlight=self.neighborhood_highlight,
                                     select_menu=self.select_menu,
                                     filter_menu=self.filter_menu,
+                                    step_menu=self.step_menu,
                                     notebook=notebook,
                                     cdn_resources=self.cdn_resources
                                     )

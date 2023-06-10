@@ -170,6 +170,23 @@
 
     <body>
         <div class="card" style="width: 100%">
+
+            {% if step_menu %}
+                <div id="step-menu" class="card-header">
+                    <div class="row no-gutters">
+                        <div class="col-md-9">
+                            <input type="range" class="form-range" min="-1" max="25" step="1" value="-1" onchange="updateStep(value);" id="stepRange" />
+                        </div> 
+                        <div class="col-md-2">
+                            <span class="text-center" id="stepValue">
+                                Base ADG
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+
             {% if select_menu %}
                 <div id="select-menu" class="card-header">
                     <div class="row no-gutters">
@@ -268,7 +285,8 @@
               var filter = {
                   item : '',
                   property : '',
-                  value : []
+                  value : [],
+                  step : -1
               };
 
               {% if select_menu %}
@@ -279,6 +297,23 @@
                           direction: "asc"
                       }
                   });
+              {%  endif %}
+
+              {% if step_menu %}
+                let step_slider = document.getElementById("stepRange");
+                let step_text = document.getElementById("stepValue");
+
+                
+                function updateStep(value) {
+                    // key could be 'item' or 'property' and value is as selected in dropdown
+                    filter['step'] = value
+                    
+                    if (value == -1) {
+                        step_text.textContent = "Base ADG";
+                    } else {
+                        step_text.textContent = "Step " + filter['step'];
+                    }
+                }
               {%  endif %}
 
               {% if filter_menu %}
