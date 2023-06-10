@@ -300,8 +300,29 @@
               {%  endif %}
 
               {% if step_menu %}
+                if (window.addEventListener) {
+                    window.addEventListener('load',setSliderMax,false); //W3C
+                } else {
+                    window.attachEvent('onload',setSliderMax); //IE
+                }
+
                 let step_slider = document.getElementById("stepRange");
                 let step_text = document.getElementById("stepValue");
+
+                function getMaxSteps() {
+                    for (let nodeId in allNodes) {
+                        if (allNodes.hasOwnProperty(nodeId)) {
+                            if (allNodes[nodeId].step_colors) {
+                                return Object.keys(allNodes[nodeId].step_colors).length - 1;
+                            }
+                        }
+                    }
+                    return 0;
+                }
+
+                function setSliderMax() {
+                    step_slider.max = getMaxSteps();
+                }
 
                 
                 function updateStep(value) {
@@ -313,6 +334,40 @@
                     } else {
                         step_text.textContent = "Step " + filter['step'];
                     }
+
+                    var updateNodeArray = [];
+                    for (let nodeId in allNodes) {
+                        if (allNodes.hasOwnProperty(nodeId)) {
+                            if (value == "-1") {
+                                allNodes[nodeId].color = allNodes[nodeId].default_color;
+                            }  else {
+                                if (allNodes[nodeId].step_colors.hasOwnProperty(value)) {
+                                    allNodes[nodeId].color = allNodes[nodeId].step_colors[value];
+                                } else {
+                                    console.log("No color for node " + nodeId + " at step " + value)
+                                }
+                            }
+                            updateNodeArray.push(allNodes[nodeId]);
+                        }
+                    }
+                    nodes.update(updateNodeArray);
+
+                    var updateEdgeArray = [];
+                    for (let edgeId in allEdges) {
+                        if (allEdges.hasOwnProperty(edgeId)) {
+                            if (value == "-1") {
+                                allEdges[edgeId].color = allEdges[edgeId].default_color;
+                            }  else {
+                                if (allEdges[edgeId].step_colors.hasOwnProperty(value)) {
+                                    allEdges[edgeId].color = allEdges[edgeId].step_colors[value];
+                                } else {
+                                    console.log("No color for edge " + edgeId + " at step " + value)
+                                }
+                            }
+                            updateEdgeArray.push(allEdges[edgeId]);
+                        }
+                    }
+                    edges.update(updateEdgeArray);
                 }
               {%  endif %}
 
