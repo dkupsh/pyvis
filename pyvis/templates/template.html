@@ -171,8 +171,38 @@
     <body>
         <div class="card" style="width: 100%">
 
-            {% if step_menu %}
-                <div id="step-menu" class="card-header">
+            {% if ml_menu %}
+                <div id="ml-menu" class="card-header">
+                    <div class="row no-gutters">
+                        <div class="col-md-8">
+                            <select
+                                class="form-select"
+                                onchange="selectDFG([value]);"
+                                id="select-dfg"
+                                placeholder="Select DFG..."
+                                >
+                                {% for dfg in dfgs %}
+                                    <option value="{{ dfg }}">{{dfg}}</option>
+                                {% endfor %}
+                          </select>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="utilizationCheckbox" onChange="updateUtilization();" checked>
+                                <label class="form-check-label" for="utilizationCheckbox">
+                                    Show Utilizations
+                                </label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" 
+                                onChange="updateProbability();"
+                                id="probabilityCheckbox">
+                                <label class="form-check-label" for="probabilityCheckbox">
+                                    Show Probabilities
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row no-gutters">
                         <div class="col-md-9">
                             <input type="range" class="form-range" min="-1" max="25" step="1" value="-1" onchange="updateStep(value);" id="stepRange" />
@@ -285,9 +315,15 @@
               var filter = {
                   item : '',
                   property : '',
-                  value : [],
-                  step : -1
+                  value : []
               };
+
+              var ml_options = {
+                dfg_file : '',
+                showUtilization : true,
+                showProbability : false,
+                step : -1
+              }
 
               {% if select_menu %}
                   new TomSelect("#select-node",{
@@ -299,13 +335,16 @@
                   });
               {%  endif %}
 
-              {% if step_menu %}
+              {% if ml_menu %}
                 if (window.addEventListener) {
-                    window.addEventListener('load',setSliderMax,false); //W3C
+                    window.addEventListener('load',setSliderMax, false); //W3C
                 } else {
                     window.attachEvent('onload',setSliderMax); //IE
                 }
+                
 
+                let utilization_checkbox = document.getElementById("utilizationCheckbox");
+                let probability_checkbox = document.getElementById("probabilityCheckbox");
                 let step_slider = document.getElementById("stepRange");
                 let step_text = document.getElementById("stepValue");
 
@@ -321,54 +360,126 @@
                 }
 
                 function setSliderMax() {
-                    step_slider.max = getMaxSteps();
+                    max_steps = getMaxSteps();
+                    step_slider.max = max_steps;
                 }
 
-                
+                function selectDFG(value) {
+                    if (value != ml_options['dfg_file']) {
+                        ml_options['dfg_file'] = value;
+                        setSliderMax();
+                        updateColors();
+                    }
+                }
+
+                function updateUtilization() {
+                    value = utilization_checkbox.checked;
+                    if (value != ml_options['showUtilization']) {
+                        ml_options['showUtilization'] = value;
+                        updateColors();
+                    }
+                }
+
+                function updateProbability() {
+                    value = probability_checkbox.checked;
+                    if (value != ml_options['showProbability']) {
+                        ml_options['showProbability'] = value;
+                        updateColors();
+                    }
+                }
+
                 function updateStep(value) {
-                    // key could be 'item' or 'property' and value is as selected in dropdown
-                    filter['step'] = value
-                    
-                    if (value == -1) {
-                        step_text.textContent = "Base ADG";
-                    } else {
-                        step_text.textContent = "Step " + filter['step'];
-                    }
-
-                    var updateNodeArray = [];
-                    for (let nodeId in allNodes) {
-                        if (allNodes.hasOwnProperty(nodeId)) {
-                            if (value == "-1") {
-                                allNodes[nodeId].color = allNodes[nodeId].default_color;
-                            }  else {
-                                if (allNodes[nodeId].step_colors.hasOwnProperty(value)) {
-                                    allNodes[nodeId].color = allNodes[nodeId].step_colors[value];
-                                } else {
-                                    console.log("No color for node " + nodeId + " at step " + value)
-                                }
-                            }
-                            updateNodeArray.push(allNodes[nodeId]);
+                    if (value != ml_options['step']) {
+                        ml_options['step'] = value;
+                        
+                        if (value == -1) {
+                            step_text.textContent = "Base ADG";
+                        } else {
+                            step_text.textContent = "Step " + ml_options['step'];
                         }
-                    }
-                    nodes.update(updateNodeArray);
 
+                        updateColors();
+                    }
+                }
+
+                function updateColors() {
+                    updateEdgeColors();
+                    updateNodeColors();
+                }
+
+                function updateEdgeColors() {
                     var updateEdgeArray = [];
+                    
+                    dfg_file = ml_options['dfg_file'];
+                    step = ml_options['step'];
+                    utilization = ml_options['showUtilization']
+
+
                     for (let edgeId in allEdges) {
-                        if (allEdges.hasOwnProperty(edgeId)) {
-                            if (value == "-1") {
-                                allEdges[edgeId].color = allEdges[edgeId].default_color;
-                            }  else {
-                                if (allEdges[edgeId].step_colors.hasOwnProperty(value)) {
-                                    allEdges[edgeId].color = allEdges[edgeId].step_colors[value];
-                                } else {
-                                    console.log("No color for edge " + edgeId + " at step " + value)
+                        if (!allEdges.hasOwnProperty(edgeId)) {
+                            console.log("edge not found: " + edgeId);
+                            continue;
+                        }
+
+                        if (step == -1) {
+                            allEdges[edgeId].color = allEdges[edgeId].base_color;
+                        } else {
+                            allEdges[edgeId].color = allEdges[edgeId].grey_color;
+
+                            if (utilization) {
+                                utilization_colors = allEdges[edgeId].utilization_colors[dfg_file]
+
+                                if (utilization_colors.hasOwnProperty(step)) {
+                                    allEdges[edgeId].color = utilization_colors[step];
                                 }
                             }
-                            updateEdgeArray.push(allEdges[edgeId]);
                         }
+
+                        updateEdgeArray.push(allEdges[edgeId]);
                     }
                     edges.update(updateEdgeArray);
                 }
+
+                function updateNodeColors() {
+                    var updateNodeArray = [];
+
+                    dfg_file = ml_options['dfg_file'];
+                    step = ml_options['step'];
+                    utilization = ml_options['showUtilization']
+                    probabilities = ml_options['showProbability']
+                    
+                    for (let nodeId in allNodes) {
+                        if (!allNodes.hasOwnProperty(nodeId)) {
+                            console.log("nodeId not found: " + nodeId);
+                            continue;
+                        }
+
+                        if (step == -1) {
+                            allNodes[nodeId].color = allNodes[nodeId].base_color;
+                        } else {
+                            allNodes[nodeId].color = allNodes[nodeId].grey_color;
+
+                            if (utilization) {
+                                utilization_colors = allNodes[nodeId].utilization_colors[dfg_file]
+    
+                                if (utilization_colors.hasOwnProperty(step)) {
+                                    allNodes[nodeId].color = utilization_colors[step];
+                                } else if (probabilities) {
+                                    probability_colors = allNodes[nodeId].probability_colors[dfg_file]
+    
+                                    if (probability_colors.hasOwnProperty(step)) {
+                                        allNodes[nodeId].color = probability_colors[step];
+                                    }
+                                }
+                            }
+                        }
+                        
+                        
+                        updateNodeArray.push(allNodes[nodeId]);
+                    }
+                    nodes.update(updateNodeArray);
+                }
+
               {%  endif %}
 
               {% if filter_menu %}
