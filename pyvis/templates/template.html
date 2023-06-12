@@ -318,6 +318,13 @@
                   value : []
               };
 
+              var maxsteps = [
+                {% for dfg in dfg_steps %}
+                dfg, 
+                {% endfor %}
+              ]
+              
+
               var ml_options = {
                 dfg_file : '',
                 showUtilization : true,
@@ -342,26 +349,38 @@
                     window.attachEvent('onload',setSliderMax); //IE
                 }
                 
-
+                let dfg_selector = document.getElementById("select-dfg");
                 let utilization_checkbox = document.getElementById("utilizationCheckbox");
                 let probability_checkbox = document.getElementById("probabilityCheckbox");
                 let step_slider = document.getElementById("stepRange");
                 let step_text = document.getElementById("stepValue");
 
+                function setDefaultValues() {
+                    utilization_checkbox.checked = ml_options['showUtilization'];
+                    probability_checkbox.checked = ml_options['showProbability'];
+                    step_slider.value = ml_options['step'];
+                    step_text.innerHTML = "Base ADG";
+
+                    dfg_selector.value = e.options[e.selectedIndex].value;
+                    ml_options['dfg_file'] = dfg_selector.value;
+
+                    setSliderMax();
+
+                }
+
                 function getMaxSteps() {
-                    for (let nodeId in allNodes) {
-                        if (allNodes.hasOwnProperty(nodeId)) {
-                            if (allNodes[nodeId].step_colors) {
-                                return Object.keys(allNodes[nodeId].step_colors).length - 1;
-                            }
-                        }
-                    }
-                    return 0;
+                    return dfg_steps[ml_options['dfg_file']];
                 }
 
                 function setSliderMax() {
-                    max_steps = getMaxSteps();
-                    step_slider.max = max_steps;
+                    max_steps = dfg_steps[ml_options['dfg_file']];
+                    if (parseInt(step_slider.value) > max_steps) {
+                        step_slider.value = -1;
+                    }
+                    
+                    step_slider.max = dfg_steps[ml_options['dfg_file']];
+
+
                 }
 
                 function selectDFG(value) {
