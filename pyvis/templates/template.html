@@ -344,9 +344,9 @@
 
               {% if ml_menu %}
                 if (window.addEventListener) {
-                    window.addEventListener('load',setSliderMax, false); //W3C
+                    window.addEventListener('load',setDefaultValues, false); //W3C
                 } else {
-                    window.attachEvent('onload',setSliderMax); //IE
+                    window.attachEvent('onload',setDefaultValues); //IE
                 }
                 
                 let dfg_selector = document.getElementById("select-dfg");
