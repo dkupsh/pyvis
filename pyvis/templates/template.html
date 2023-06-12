@@ -361,7 +361,7 @@
                     step_slider.value = ml_options['step'];
                     step_text.innerHTML = "Base ADG";
 
-                    dfg_selector.value = e.options[e.selectedIndex].value;
+                    dfg_selector.value = dfg_selector.options[dfg_selector.selectedIndex].value;
                     ml_options['dfg_file'] = dfg_selector.value;
 
                     setSliderMax();
@@ -408,13 +408,14 @@
                 }
 
                 function updateStep(value) {
-                    if (value != ml_options['step']) {
-                        ml_options['step'] = value;
+                    new_step = parseInt(value);
+                    if (new_step != ml_options['step']) {
+                        ml_options['step'] = new_step;
                         
-                        if (value == -1) {
+                        if (new_step == -1) {
                             step_text.textContent = "Base ADG";
                         } else {
-                            step_text.textContent = "Step " + ml_options['step'];
+                            step_text.textContent = "Step " + value;
                         }
 
                         updateColors();

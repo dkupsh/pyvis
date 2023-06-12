@@ -36,7 +36,7 @@ class Network(object):
                  filter_menu=False,
                  ml_menu=False,
                  dfg_files=[""],
-                 dfg_steps=[0],
+                 dfg_steps=[('', 0)],
                  bgcolor="#ffffff",
                  font_color=False,
                  layout=None,
