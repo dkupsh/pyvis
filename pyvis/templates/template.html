@@ -318,11 +318,11 @@
                   value : []
               };
 
-              var maxsteps = [
+              var dfg_steps = {
                 {% for dfg in dfg_steps %}
-                    {{ dfg }}, 
+                    {{ dfg[0] }}: {{ dfg[1]}}, 
                 {% endfor %}
-              ]
+              };
               
 
               var ml_options = {
