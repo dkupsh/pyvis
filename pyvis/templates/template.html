@@ -479,7 +479,6 @@
                             allNodes[nodeId].color = allNodes[nodeId].base_color;
                         } else {
                             allNodes[nodeId].color = allNodes[nodeId].grey_color;
-
                             if (utilization) {
                                 utilization_colors = allNodes[nodeId].utilization_colors[dfg_file]
     
@@ -491,6 +490,13 @@
                                     if (probability_colors.hasOwnProperty(step)) {
                                         allNodes[nodeId].color = probability_colors[step];
                                     }
+                                }
+                            }
+
+                            if (allNodes[nodeId]['highlight_step'].hasOwnProperty(step)) {
+                                allNodes[nodeId].color = {
+                                    background: allNodes[nodeId].color,
+                                    border: allNodes[nodeId]['highlight_step'][step],
                                 }
                             }
                         }
