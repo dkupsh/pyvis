@@ -375,6 +375,7 @@
                 function setSliderMax() {
                     max_steps = dfg_steps[ml_options['dfg_file']];
                     if (parseInt(step_slider.value) > max_steps) {
+                        step_text.textContent = "Base ADG";
                         step_slider.value = -1;
                     }
                     
