@@ -480,31 +480,31 @@
                         info = dfg_info[dfg_file][step];
                         
                         if (info.hasOwnProperty('reward')) {
-                            reward_text.textContent = "Reward: " + info['reward'];
+                            reward_text.textContent = "Reward: " + (+info['reward'].toFixed(2));
                         } else {
                             reward_text.textContent = "Reward:";
                         }
 
                         if (info.hasOwnProperty('agg_overprovisioning')) {
-                            overprov_text.textContent = "Overprov: " + info['agg_overprovisioning'];
+                            overprov_text.textContent = "Overprov: " + (+info['agg_overprovisioning'].toFixed(2));
                         } else {
                             overprov_text.textContent = "Overprov:";
                         }
 
                         if (info.hasOwnProperty('violation')) {
-                            violation_text.textContent = "Violation: " + info['violation'];
+                            violation_text.textContent = "Violation: " + (+info['violation'].toFixed(2));
                         } else {
                             violation_text.textContent = "Violation:";
                         }
 
                         if (info.hasOwnProperty('latency')) {
-                            latency_text.textContent = "Latency: " + info['latency'];
+                            latency_text.textContent = "Latency: " + (+info['latency'].toFixed(2));
                         } else {
                             latency_text.textContent = "Latency:";
                         }
 
                         if (info.hasOwnProperty('links_mapped')) {
-                            links_text.textContent = "Links: " + info['links_mapped'];
+                            links_text.textContent = "Links: " + (+info['links_mapped'].toFixed(2));
                         } else {
                             links_text.textContent = "Links:";
                         }
