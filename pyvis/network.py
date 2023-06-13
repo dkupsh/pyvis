@@ -37,6 +37,7 @@ class Network(object):
                  ml_menu=False,
                  dfg_files=[""],
                  dfg_steps=[('', 0)],
+                 dfg_info={"": {}},
                  bgcolor="#ffffff",
                  font_color=False,
                  layout=None,
@@ -94,6 +95,7 @@ class Network(object):
         self.ml_menu = ml_menu
         self.dfg_files = dfg_files
         self.dfg_steps = dfg_steps
+        self.dfg_info = dfg_info
         assert cdn_resources in ["local", "in_line", "remote"], "cdn_resources not in [local, in_line, remote]."
         # path is the root template located in the template_dir
         self.path = "template.html"
@@ -501,6 +503,7 @@ class Network(object):
                                     ml_menu=self.ml_menu,
                                     dfg_files=self.dfg_files,
                                     dfg_steps=self.dfg_steps,
+                                    dfg_info=self.dfg_info,
                                     notebook=notebook,
                                     cdn_resources=self.cdn_resources
                                     )

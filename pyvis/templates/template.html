@@ -213,6 +213,33 @@
                             </span>
                         </div>
                     </div>
+                    <div class="row no-gutters">
+                        <div class="col-lg-2 mx-1 border bg-dark border-dark rounded">
+                            <span class="text-white" id="rewardText">
+                                Reward:    
+                            </span>
+                        </div>
+                        <div class="col-lg-2 mx-1 border bg-dark border-dark rounded">
+                            <span class="text-white" id="overprovText">
+                                Overprov:    
+                            </span>
+                        </div>
+                        <div class="col-lg-2 mx-1 border bg-dark border-dark rounded">
+                            <span class="text-white" id="violationText">
+                                Violation:    
+                            </span>
+                        </div>
+                        <div class="col-lg-2 mx-1 border bg-dark border-dark rounded">
+                            <span class="text-white" id="latencyText">
+                                Latency:    
+                            </span>
+                        </div>
+                        <div class="col-lg-2 mx-1 border bg-dark border-dark rounded">
+                            <span class="text-white" id="linksText">
+                                Links:    
+                            </span>
+                        </div>
+                    </div>
                 </div>
             {% endif %}
 
@@ -323,6 +350,8 @@
                     {{ dfg[0] }}: {{ dfg[1]}}, 
                 {% endfor %}
               };
+
+              var dfg_info = {{ dfg_info }};
               
 
               var ml_options = {
@@ -354,6 +383,14 @@
                 let probability_checkbox = document.getElementById("probabilityCheckbox");
                 let step_slider = document.getElementById("stepRange");
                 let step_text = document.getElementById("stepValue");
+
+
+                let reward_text = document.getElementById("rewardText");
+                let overprov_text = document.getElementById("overprovText");
+                let violation_text = document.getElementById("violationText");
+                let latency_text = document.getElementById("latencyText");
+                let links_text = document.getElementById("linksText");
+
 
                 function setDefaultValues() {
                     utilization_checkbox.checked = ml_options['showUtilization'];
@@ -424,8 +461,54 @@
                 }
 
                 function updateColors() {
+                    updateText();
                     updateEdgeColors();
                     updateNodeColors();
+                }
+
+                function updateText() {
+                    dfg_file = ml_options['dfg_file'];
+                    step = ml_options['step'];
+
+                    if (step == -1 || !dfg_info[dfg_file].hasOwnProperty(step)) {
+                        reward_text.textContent = "Reward:";
+                        overprov_text.textContent = "Overprov:";
+                        violation_text.textContent = "Violation:";
+                        latency_text.textContent = "Latency:";
+                        links_text.textContent = "Links:";
+                    } else {
+                        info = dfg_info[dfg_file][step];
+                        
+                        if (info.hasOwnProperty('reward')) {
+                            reward_text.textContent = "Reward: " + info['reward'];
+                        } else {
+                            reward_text.textContent = "Reward:";
+                        }
+
+                        if (info.hasOwnProperty('agg_overprovisioning')) {
+                            overprov_text.textContent = "Overprov: " + info['agg_overprovisioning'];
+                        } else {
+                            overprov_text.textContent = "Overprov:";
+                        }
+
+                        if (info.hasOwnProperty('violation')) {
+                            violation_text.textContent = "Violation: " + info['violation'];
+                        } else {
+                            violation_text.textContent = "Violation:";
+                        }
+
+                        if (info.hasOwnProperty('latency')) {
+                            latency_text.textContent = "Latency: " + info['latency'];
+                        } else {
+                            latency_text.textContent = "Latency:";
+                        }
+
+                        if (info.hasOwnProperty('links_mapped')) {
+                            links_text.textContent = "Links: " + info['links_mapped'];
+                        } else {
+                            links_text.textContent = "Links:";
+                        }
+                    }
                 }
 
                 function updateEdgeColors() {
