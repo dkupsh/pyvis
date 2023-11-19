@@ -463,7 +463,7 @@
                             continue;
                         }
 
-                        if (allEdges[edgeId].hasOwnProperty(hiddens)) {
+                        if (allEdges[edgeId].hasOwnProperty(hidden_list)) {
                             allEdges[edgeId].hidden = allEdges[edgeId].hidden_list[step];
                             updateEdgeArray.push(allEdges[edgeId]);
                         }
@@ -479,7 +479,7 @@
                             continue;
                         }
 
-                        if (allNodes[nodeId].hasOwnProperty(hiddens)) {
+                        if (allNodes[nodeId].hasOwnProperty(hidden_list)) {
                             allNodes[nodeId].hidden = allNodes[nodeId].hidden_list[step];
                             updateNodeArray.push(allNodes[nodeId]);
                         }
