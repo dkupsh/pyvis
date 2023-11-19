@@ -33,6 +33,7 @@ class Network(object):
                  neighborhood_highlight=False,
                  select_menu=False,
                  filter_menu=False,
+                 dse_menu=False,
                  ml_menu=False,
                  dfg_files=[""],
                  dse_info={},
@@ -92,6 +93,7 @@ class Network(object):
         self.neighborhood_highlight = neighborhood_highlight
         self.select_menu = select_menu
         self.filter_menu = filter_menu
+        self.dse_menu = dse_menu
         self.ml_menu = ml_menu
         self.dfg_files = dfg_files
         self.dfg_steps = dfg_steps
@@ -501,6 +503,7 @@ class Network(object):
                                     neighborhood_highlight=self.neighborhood_highlight,
                                     select_menu=self.select_menu,
                                     filter_menu=self.filter_menu,
+                                    dse_menu=self.dse_menu,
                                     ml_menu=self.ml_menu,
                                     dse_info=self.dse_info,
                                     dfg_files=self.dfg_files,
