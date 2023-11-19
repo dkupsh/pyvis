@@ -174,7 +174,7 @@
             <div id="dse-options" class="card-header">
                 <div class="row no-gutters">
                     <div class="col-md-6">
-                        <input type="range" class="form-range" min="-1" max="25" step="1" value="-1" onchange="updateStep(value);" id="stepRange" />
+                        <input type="range" class="form-range" min="0" max="25" step="1" value="0" onchange="updateStep(value);" id="stepRange" />
                     </div> 
                     <div class="col-md-2">
                         <span class="text-center" id="stepValue">
@@ -402,12 +402,6 @@
                   value : []
               };
 
-              var dse_options = {
-                showUtilization : false,
-                showProbability : false,
-                step : 0,
-              }
-
               {% if select_menu %}
                   new TomSelect("#select-node",{
                       create: false,
@@ -419,6 +413,14 @@
               {%  endif %}
 
               {% if dse_menu %}
+                var dse_info = {{dse_info|safe}};
+
+                var dse_options = {
+                    showUtilization : false,
+                    showProbability : false,
+                    step : 0,
+                }
+
                 if (window.addEventListener) {
                     window.addEventListener('load',setDefaultValues, false); //W3C
                 } else {
