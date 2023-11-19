@@ -432,12 +432,20 @@
                 let step_slider = document.getElementById("stepRange");
                 let step_text = document.getElementById("stepValue");
 
+                let reward_text = document.getElementById("rewardText");
+                let area_text = document.getElementById("areaText");
+                let performance_text = document.getElementById("performanceText");
+                let core_text = document.getElementById("coresText");
+                let utilization_text = document.getElementById("utilizationText");
+
+
                 function setDefaultValues() {
                     utilization_checkbox.checked = dse_options['showUtilization'];
                     probability_checkbox.checked = dse_options['showProbability'];
                     step_slider.value = dse_options['step'];
                     step_text.innerHTML = "Step: " + dse_options['step'];
 
+                    updateText(dse_options['step']);
                     setSliderMax();
                 }
 
@@ -450,11 +458,20 @@
                     if (new_step != dse_options['step']) {
                         dse_options['step'] = new_step;
                         step_text.textContent = "Step " + value;
-
+                        
+                        updateText(new_step)
                         updateEdgeHidden(new_step);
                         updateNodeHidden(new_step);
                     }
-                  }
+                }
+
+                function updateText(step) {
+                    reward_text.textContent = "Reward:" + dse_info['reward'][step].toFixed(2);
+                    area_text.textContent = "Area:" + dse_info['area'][step].toFixed(2);
+                    performance_text.textContent = "Performance:" + dse_info['performance'][step].toFixed(2);
+                    core_text.textContent = "Cores:" + dse_info['cores'][step].toFixed(2);
+                    utilization_text.textContent = "Utilization:" + dse_info['utilization'][step].toFixed(2);
+                }
     
 
                 function updateEdgeHidden(step) {
