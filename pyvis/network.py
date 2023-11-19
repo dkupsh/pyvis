@@ -20,7 +20,6 @@ class Network(object):
     """
     The Network class is the focus of this library. All viz functionality
     should be implemented off of a Network instance.
-
     To instantiate:
 
     >>> nt = Network()
@@ -36,6 +35,7 @@ class Network(object):
                  filter_menu=False,
                  ml_menu=False,
                  dfg_files=[""],
+                 dse_info={},
                  dfg_steps=[('', 0)],
                  dfg_info={"": {}},
                  bgcolor="#ffffff",
@@ -96,6 +96,7 @@ class Network(object):
         self.dfg_files = dfg_files
         self.dfg_steps = dfg_steps
         self.dfg_info = dfg_info
+        self.dse_info = dse_info
         assert cdn_resources in ["local", "in_line", "remote"], "cdn_resources not in [local, in_line, remote]."
         # path is the root template located in the template_dir
         self.path = "template.html"
@@ -501,6 +502,7 @@ class Network(object):
                                     select_menu=self.select_menu,
                                     filter_menu=self.filter_menu,
                                     ml_menu=self.ml_menu,
+                                    dse_info=self.dse_info,
                                     dfg_files=self.dfg_files,
                                     dfg_steps=self.dfg_steps,
                                     dfg_info=self.dfg_info,
