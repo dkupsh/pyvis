@@ -170,6 +170,63 @@
 
     <body>
         <div class="card" style="width: 100%">
+            {% if dse_menu %}
+            <div id="dse-options" class="card-header">
+                <div class="row no-gutters">
+                    <div class="col-md-6">
+                        <input type="range" class="form-range" min="-1" max="25" step="1" value="-1" onchange="updateStep(value);" id="stepRange" />
+                    </div> 
+                    <div class="col-md-2">
+                        <span class="text-center" id="stepValue">
+                            Step: 0
+                        </span>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="utilizationCheckbox" onChange="updateUtilization();" checked>
+                          <label class="form-check-label" for="utilizationCheckbox">
+                              Show Utilizations
+                          </label>
+                      </div>
+                      <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" 
+                          onChange="updateProbability();"
+                          id="probabilityCheckbox">
+                          <label class="form-check-label" for="probabilityCheckbox">
+                              Show Probabilities
+                          </label>
+                      </div>
+                  </div>
+                </div>
+                <div class="row no-gutters">
+                    <div class="col-lg-2 mx-1 border bg-dark border-dark rounded">
+                        <span class="text-white" id="rewardText">
+                            Reward:    
+                        </span>
+                    </div>
+                    <div class="col-lg-2 mx-1 border bg-dark border-dark rounded">
+                        <span class="text-white" id="areaText">
+                            Area:    
+                        </span>
+                    </div>
+                    <div class="col-lg-2 mx-1 border bg-dark border-dark rounded">
+                        <span class="text-white" id="performanceText">
+                            Performance:    
+                        </span>
+                    </div>
+                    <div class="col-lg-2 mx-1 border bg-dark border-dark rounded">
+                        <span class="text-white" id="coresText">
+                            Cores:    
+                        </span>
+                    </div>
+                    <div class="col-lg-2 mx-1 border bg-dark border-dark rounded">
+                        <span class="text-white" id="utilizationText">
+                            Utilization:    
+                        </span>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
 
             {% if ml_menu %}
                 <div id="ml-menu" class="card-header">
@@ -345,20 +402,10 @@
                   value : []
               };
 
-              var dfg_steps = {
-                {% for dfg in dfg_steps %}
-                    {{ dfg[0] }}: {{ dfg[1]}}, 
-                {% endfor %}
-              };
-
-              var dfg_info = {{ dfg_info }};
-              
-
-              var ml_options = {
-                dfg_file : '',
-                showUtilization : true,
+              var dse_options = {
+                showUtilization : false,
                 showProbability : false,
-                step : -1
+                step : 0,
               }
 
               {% if select_menu %}
@@ -370,6 +417,81 @@
                       }
                   });
               {%  endif %}
+
+              {% if dse_menu %}
+                if (window.addEventListener) {
+                    window.addEventListener('load',setDefaultValues, false); //W3C
+                } else {
+                    window.attachEvent('onload',setDefaultValues); //IE
+                }
+                
+                let utilization_checkbox = document.getElementById("utilizationCheckbox");
+                let probability_checkbox = document.getElementById("probabilityCheckbox");
+                let step_slider = document.getElementById("stepRange");
+                let step_text = document.getElementById("stepValue");
+
+                function setDefaultValues() {
+                    utilization_checkbox.checked = dse_options['showUtilization'];
+                    probability_checkbox.checked = dse_options['showProbability'];
+                    step_slider.value = dse_options['step'];
+                    step_text.innerHTML = "Step: " + dse_options['step'];
+
+                    setSliderMax();
+                }
+
+                function setSliderMax() {
+                    step_slider.max = dse_info['steps'];
+                }
+
+                function updateStep(value) {
+                    new_step = parseInt(value);
+                    if (new_step != dse_options['step']) {
+                        dse_options['step'] = new_step;
+                        step_text.textContent = "Step " + value;
+
+                        updateEdgeHidden(new_step);
+                        updateNodeHidden(new_step);
+                    }
+                  }
+    
+
+                function updateEdgeHidden(step) {
+                    var updateEdgeArray = [];
+                    for (let edgeId in allEdges) {
+                        if (!allEdges.hasOwnProperty(edgeId)) {
+                            console.log("edge not found: " + edgeId);
+                            continue;
+                        }
+
+                        if (allEdges[edgeId].hasOwnProperty(hiddens)) {
+                            allEdges[edgeId].hidden = allEdges[edgeId].hidden_list[step];
+                            updateEdgeArray.push(allEdges[edgeId]);
+                        }
+                    }
+                    edges.update(updateEdgeArray);
+                }
+
+                function updateNodeHidden(step) {
+                    var updateNodeArray = [];
+                    for (let nodeId in allNodes) {
+                        if (!allNodes.hasOwnProperty(nodeId)) {
+                            console.log("Node not found: " + nodeId);
+                            continue;
+                        }
+
+                        if (allNodes[nodeId].hasOwnProperty(hiddens)) {
+                            allNodes[nodeId].hidden = allNodes[nodeId].hidden_list[step];
+                            updateNodeArray.push(allNodes[nodeId]);
+                        }
+                    }
+                    nodes.update(updateEdgeArray);
+                }
+
+                
+
+              {%  endif %}
+                  
+
 
               {% if ml_menu %}
                 if (window.addEventListener) {
