@@ -532,13 +532,14 @@
                     var updateEdgeArray = [];
 
                     for (let edgeId in allEdges) {
-                        if (probability_checkbox.checked && 'probability_list' in allEdges[edgeId]) {
+                        if (dse_options['showProbability'] && 'probability_list' in allEdges[edgeId]) {
                             allEdges[edgeId].color = allEdges[edgeId].probability_list[step];
-                        } else if (utilization_checkbox.checked && 'utilization_list' in allEdges[edgeId]) {
+                        } else if (dse_options['showUtilization'] && 'utilization_list' in allEdges[edgeId]) {
                             allEdges[edgeId].color = allEdges[edgeId].utilization_list[step];
                         } else {
                             allEdges[edgeId].color = allEdges[edgeId].base_color;
                         }
+                        updateEdgeArray.push(allEdges[edgeId]);
                     }
 
                     edges.update(updateEdgeArray);
@@ -548,11 +549,12 @@
                     var updateNodeArray = [];
 
                     for (let nodeId in allNodes) {
-                        if (utilization_checkbox.checked && 'utilization_list' in allNodes[nodeId]) {
+                        if (dse_options['showUtilization'] && 'utilization_list' in allNodes[nodeId]) {
                             allNodes[nodeId].color = allNodes[nodeId].utilization_list[step];
                         } else {
                             allNodes[nodeId].color = allNodes[nodeId].base_color;
                         }
+                        updateNodeArray.push(allNodes[nodeId]);
                     }
                     
                     nodes.update(updateNodeArray);
