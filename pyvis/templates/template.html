@@ -474,7 +474,6 @@
                     core_text.textContent = "Cores: " + dse_info['cores'][step].toFixed(2);
                     utilization_text.textContent = "Utilization: " + dse_info['utilization'][step].toFixed(2);
                 }
-    
 
                 function updateEdgeHidden(step) {
                     var updateEdgeArray = [];
@@ -508,8 +507,57 @@
                     nodes.update(updateNodeArray);
                 }
 
-                
+                function updateUtilization() {
+                    value = utilization_checkbox.checked;
+                    if (value != ml_options['showUtilization']) {
+                        ml_options['showUtilization'] = value;
+                        updateColors();
+                    }
+                }
 
+                function updateProbability() {
+                    value = probability_checkbox.checked;
+                    if (value != ml_options['showProbability']) {
+                        ml_options['showProbability'] = value;
+                        updateColors();
+                    }
+                }
+
+                function updateColors() {
+                    updateEdgeColors(dse_options['step']);
+                    updateNodeColors(dse_options['step']);
+                }
+
+                function updateEdgeColors(step) {
+                    var updateEdgeArray = [];
+
+                    for (let edgeId in allEdges) {
+                        if (probability_checkbox.checked && 'probability_list' in allEdges[edgeId]) {
+                            allEdges[edgeId].color = allEdges[edgeId].probability_list[step];
+                        } else if (utilization_checkbox.checked && 'utilization_list' in allEdges[edgeId]) {
+                            allEdges[edgeId].color = allEdges[edgeId].utilization_list[step];
+                        } else {
+                            allEdges[edgeId].color = allEdges[edgeId].base_color;
+                        }
+                    }
+
+                    edges.update(updateEdgeArray);
+                }
+
+                function updateNodeColors(step) {
+                    var updateNodeArray = [];
+
+                    for (let nodeId in allNodes) {
+                        if (utilization_checkbox.checked && 'utilization_list' in allNodes[nodeId]) {
+                            allNodes[nodeId].color = allNodes[nodeId].utilization_list[step];
+                        } else {
+                            allNodes[nodeId].color = allNodes[nodeId].base_color;
+                        }
+                    }
+                    
+                    nodes.update(updateNodeArray);
+
+                }
               {%  endif %}
                   
 
