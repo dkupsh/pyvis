@@ -446,6 +446,8 @@
                     step_text.innerHTML = "Step: " + dse_options['step'];
 
                     updateText(dse_options['step']);
+                    updateEdgeHidden(dse_options['step']);
+                    updateNodeHidden(dse_options['step']);
                     setSliderMax();
                 }
 
@@ -482,7 +484,7 @@
                             continue;
                         }
 
-                        if (allEdges[edgeId].hasOwnProperty(hidden_list)) {
+                        if ('hidden_list' in allEdges[edgeId]) {
                             allEdges[edgeId].hidden = allEdges[edgeId].hidden_list[step];
                             updateEdgeArray.push(allEdges[edgeId]);
                         }
@@ -498,7 +500,7 @@
                             continue;
                         }
 
-                        if (allNodes[nodeId].hasOwnProperty(hidden_list)) {
+                        if ('hidden_list' in allNodes[nodeId]) {
                             allNodes[nodeId].hidden = allNodes[nodeId].hidden_list[step];
                             updateNodeArray.push(allNodes[nodeId]);
                         }
