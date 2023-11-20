@@ -196,6 +196,14 @@
                               Show Probabilities
                           </label>
                       </div>
+                      <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" 
+                            onChange="updateAction();"
+                            id="actionCheckbox">
+                            <label class="form-check-label" for="actionCheckbox">
+                                Show Action
+                            </label>
+                        </div>
                   </div>
                 </div>
                 <div class="row no-gutters">
@@ -256,14 +264,6 @@
                                 id="probabilityCheckbox">
                                 <label class="form-check-label" for="probabilityCheckbox">
                                     Show Probabilities
-                                </label>
-                            </div>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" 
-                                onChange="updateAction();"
-                                id="actionCheckbox">
-                                <label class="form-check-label" for="actionCheckbox">
-                                    Show Action
                                 </label>
                             </div>
                         </div>
@@ -579,8 +579,8 @@
                     var updateNodeArray = [];
 
                     for (let nodeId in allNodes) {
-                        if (dse_options['showProbability'] && 'probability_list' in allEdges[edgeId]) {
-                            allEdges[edgeId].color = allEdges[edgeId].probability_list[step];
+                        if (dse_options['showProbability'] && 'probability_list' in allNodes[nodeId]) {
+                            allNodes[nodeId].color = allNodes[nodeId].probability_list[step];
                         } else if (dse_options['showUtilization'] && 'utilization_list' in allNodes[nodeId]) {
                             allNodes[nodeId].color = allNodes[nodeId].utilization_list[step];
                         } else {
