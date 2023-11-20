@@ -258,6 +258,14 @@
                                     Show Probabilities
                                 </label>
                             </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" 
+                                onChange="updateAction();"
+                                id="actionCheckbox">
+                                <label class="form-check-label" for="actionCheckbox">
+                                    Show Action
+                                </label>
+                            </div>
                         </div>
                     </div>
                     <div class="row no-gutters">
@@ -418,6 +426,7 @@
                 var dse_options = {
                     showUtilization : false,
                     showProbability : false,
+                    showAction : false,
                     step : 0,
                 }
 
@@ -429,6 +438,7 @@
                 
                 let utilization_checkbox = document.getElementById("utilizationCheckbox");
                 let probability_checkbox = document.getElementById("probabilityCheckbox");
+                let action_checkbox = document.getElementById("actionCheckbox");
                 let step_slider = document.getElementById("stepRange");
                 let step_text = document.getElementById("stepValue");
 
@@ -442,6 +452,7 @@
                 function setDefaultValues() {
                     utilization_checkbox.checked = dse_options['showUtilization'];
                     probability_checkbox.checked = dse_options['showProbability'];
+                    action_checkbox.checked = dse_options['showAction'];
                     step_slider.value = dse_options['step'];
                     step_text.innerHTML = "Step: " + dse_options['step'];
 
@@ -464,6 +475,7 @@
                         updateText(new_step)
                         updateEdgeHidden(new_step);
                         updateNodeHidden(new_step);
+                        updateColors();
                     }
                 }
 
@@ -523,6 +535,14 @@
                     }
                 }
 
+                function updateAction() {
+                    value = action_checkbox.checked;
+                    if (value != dse_options['showAction']) {
+                        dse_options['showAction'] = value;
+                        updateColors();
+                    }
+                }
+
                 function updateColors() {
                     updateEdgeColors(dse_options['step']);
                     updateNodeColors(dse_options['step']);
@@ -539,6 +559,16 @@
                         } else {
                             allEdges[edgeId].color = allEdges[edgeId].base_color;
                         }
+
+                        if (dse_options['showAction'] && 'action_list' in allEdges[edgeId]) {
+                            if (allEdges[edgeId].action_list[step]) {
+                                allEdges[edgeId].color = {
+                                    background: allEdges[edgeId].color,
+                                    border: dse_info['action_color'],
+                                }
+                            }
+                        }
+
                         updateEdgeArray.push(allEdges[edgeId]);
                     }
 
@@ -549,11 +579,24 @@
                     var updateNodeArray = [];
 
                     for (let nodeId in allNodes) {
-                        if (dse_options['showUtilization'] && 'utilization_list' in allNodes[nodeId]) {
+                        if (dse_options['showProbability'] && 'probability_list' in allEdges[edgeId]) {
+                            allEdges[edgeId].color = allEdges[edgeId].probability_list[step];
+                        } else if (dse_options['showUtilization'] && 'utilization_list' in allNodes[nodeId]) {
                             allNodes[nodeId].color = allNodes[nodeId].utilization_list[step];
                         } else {
                             allNodes[nodeId].color = allNodes[nodeId].base_color;
                         }
+
+                        if (dse_options['showAction'] && 'action_list' in allNodes[nodeId]) {
+                            if (allNodes[nodeId].action_list[step]) {
+                                allNodes[nodeId].color = {
+                                    background: allNodes[nodeId].color,
+                                    border: dse_info['action_color'],
+                                }
+                            }
+                        }
+
+
                         updateNodeArray.push(allNodes[nodeId]);
                     }
                     
