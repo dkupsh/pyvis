@@ -562,10 +562,7 @@
 
                         if (dse_options['showAction'] && 'action_list' in allEdges[edgeId]) {
                             if (allEdges[edgeId].action_list[step]) {
-                                allEdges[edgeId].color = {
-                                    background: allEdges[edgeId].color,
-                                    border: dse_info['action_color'],
-                                }
+                                allEdges[edgeId].color = dse_info['action_color'];
                             }
                         }
 
@@ -589,10 +586,7 @@
 
                         if (dse_options['showAction'] && 'action_list' in allNodes[nodeId]) {
                             if (allNodes[nodeId].action_list[step]) {
-                                allNodes[nodeId].color = {
-                                    background: allNodes[nodeId].color,
-                                    border: dse_info['action_color'],
-                                }
+                                allNodes[nodeId].color = dse_info['action_color'];
                             }
                         }
 
