@@ -509,16 +509,16 @@
 
                 function updateUtilization() {
                     value = utilization_checkbox.checked;
-                    if (value != ml_options['showUtilization']) {
-                        ml_options['showUtilization'] = value;
+                    if (value != dse_options['showUtilization']) {
+                        dse_options['showUtilization'] = value;
                         updateColors();
                     }
                 }
 
                 function updateProbability() {
                     value = probability_checkbox.checked;
-                    if (value != ml_options['showProbability']) {
-                        ml_options['showProbability'] = value;
+                    if (value != dse_options['showProbability']) {
+                        dse_options['showProbability'] = value;
                         updateColors();
                     }
                 }
