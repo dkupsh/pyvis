@@ -34,7 +34,8 @@ class Network(object):
                  neighborhood_highlight=False,
                  select_menu=False,
                  filter_menu=False,
-                 ml_menu=False,
+                 adg_visualization_type=0,
+                 step_properties=[],
                  dfg_files=[""],
                  dfg_steps=[('', 0)],
                  dfg_info={"": {}},
@@ -92,7 +93,8 @@ class Network(object):
         self.neighborhood_highlight = neighborhood_highlight
         self.select_menu = select_menu
         self.filter_menu = filter_menu
-        self.ml_menu = ml_menu
+        self.adg_visualization_type = adg_visualization_type
+        self.step_properties = step_properties
         self.dfg_files = dfg_files
         self.dfg_steps = dfg_steps
         self.dfg_info = dfg_info
@@ -500,7 +502,8 @@ class Network(object):
                                     neighborhood_highlight=self.neighborhood_highlight,
                                     select_menu=self.select_menu,
                                     filter_menu=self.filter_menu,
-                                    ml_menu=self.ml_menu,
+                                    adg_visualization_type=self.adg_visualization_type,
+                                    step_properties=self.step_properties,
                                     dfg_files=self.dfg_files,
                                     dfg_steps=self.dfg_steps,
                                     dfg_info=self.dfg_info,
@@ -553,7 +556,6 @@ class Network(object):
         :param: name: the name of the html file to save as
         :type name: str
         """
-        print(name)
         if notebook:
             self.write_html(name, open_browser=False,notebook=True)
         else:
