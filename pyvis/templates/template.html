@@ -732,6 +732,7 @@
 
 
         {% if adg_visualization_type == 2 %}
+          var adg_properties = {{ adg_properties }};
           var step_properties = {{ step_properties }};
           var dse_options = {
             showUtilization : false,
@@ -879,7 +880,10 @@
               }
 
               if (allNodes[nodeId].action[step]) {
-                allNodes[nodeId].color = '#008000';
+                allNodes[nodeId].color = {
+                  background: allNodes[nodeId].color,
+                  border: adg_properties['node_highlight_color'],
+                }
               }
 
               updateNodeArray.push(allNodes[nodeId]);
@@ -914,10 +918,10 @@
             }
 
             if (allEdges[edgeId].action[step]) {
-              allEdges[edgeId].width = 5;
-              allEdges[edgeId].color = '#008000';
+              allEdges[edgeId].width =  adg_properties['link_highlight_width'];
+              allEdges[edgeId].color = adg_properties['link_highlight_color'];
             } else {
-              allEdges[edgeId].width = 1;
+              allEdges[edgeId].width = allEdges[edgeId].base_width;
             }
 
             updateEdgeArray.push(allEdges[edgeId]);

@@ -35,6 +35,7 @@ class Network(object):
                  select_menu=False,
                  filter_menu=False,
                  adg_visualization_type=0,
+                 adg_properties={},
                  step_properties=[],
                  dfg_files=[""],
                  dfg_steps=[('', 0)],
@@ -94,6 +95,7 @@ class Network(object):
         self.select_menu = select_menu
         self.filter_menu = filter_menu
         self.adg_visualization_type = adg_visualization_type
+        self.adg_properties = adg_properties
         self.step_properties = step_properties
         self.dfg_files = dfg_files
         self.dfg_steps = dfg_steps
@@ -503,6 +505,7 @@ class Network(object):
                                     select_menu=self.select_menu,
                                     filter_menu=self.filter_menu,
                                     adg_visualization_type=self.adg_visualization_type,
+                                    adg_properties=self.adg_properties,
                                     step_properties=self.step_properties,
                                     dfg_files=self.dfg_files,
                                     dfg_steps=self.dfg_steps,
