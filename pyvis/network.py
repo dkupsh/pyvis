@@ -100,11 +100,13 @@ class Network(object):
         self.dfg_files = dfg_files
         self.dfg_steps = dfg_steps
         self.dfg_info = dfg_info
-        assert cdn_resources in ["local", "in_line", "remote"], "cdn_resources not in [local, in_line, remote]."
+        assert cdn_resources in [
+            "local", "in_line", "remote"], "cdn_resources not in [local, in_line, remote]."
         # path is the root template located in the template_dir
         self.path = "template.html"
         self.template_dir = os.path.dirname(__file__) + "/templates/"
-        self.templateEnv = Environment(loader=FileSystemLoader(self.template_dir))
+        self.templateEnv = Environment(
+            loader=FileSystemLoader(self.template_dir))
 
         if cdn_resources == "local" and notebook == True:
             print("Warning: When  cdn_resources is 'local' jupyter notebook has issues displaying graphics on chrome/safari."
@@ -252,9 +254,11 @@ class Network(object):
             node_label = n_id
         if n_id not in self.node_ids:
             if "group" in options:
-                n = Node(n_id, shape, label=node_label, font_color=self.font_color, **options)
+                n = Node(n_id, shape, label=node_label,
+                         font_color=self.font_color, **options)
             else:
-                n = Node(n_id, shape, label=node_label, color=color, font_color=self.font_color, **options)
+                n = Node(n_id, shape, label=node_label, color=color,
+                         font_color=self.font_color, **options)
             self.nodes.append(n.options)
             self.node_ids.append(n_id)
             self.node_map[n_id] = n.options
@@ -284,7 +288,7 @@ class Network(object):
         :type nodes: list
         """
         valid_args = ["size", "value", "title",
-            "x", "y", "label", "color", "shape"]
+                      "x", "y", "label", "color", "shape"]
         for k in kwargs:
             assert k in valid_args, "invalid arg '" + k + "'"
 
@@ -292,12 +296,12 @@ class Network(object):
         for i in range(len(nodes)):
             for k, v in kwargs.items():
                 assert (
-                        len(v) == len(nodes)
+                    len(v) == len(nodes)
                 ), "keyword arg %s [length %s] does not match" \
                    "[length %s] of nodes" % \
                    (
                        k, len(v), len(nodes)
-                   )
+                )
                 nd[nodes[i]].update({k: v[i]})
 
         for node in nodes:
@@ -473,7 +477,8 @@ class Network(object):
         if not notebook:
             # with open(self.path) as html:
             #     content = html.read()
-            template = self.templateEnv.get_template(self.path)  # Template(content)
+            template = self.templateEnv.get_template(
+                self.path)  # Template(content)
         else:
             template = self.template
 
@@ -515,7 +520,7 @@ class Network(object):
                                     )
         return self.html
 
-    def write_html(self, name, local=True, notebook=False,open_browser=False):
+    def write_html(self, name, local=True, notebook=False, open_browser=False):
         """
         This method gets the data structures supporting the nodes, edges,
         and options and updates the template to write the HTML holding
@@ -536,11 +541,14 @@ class Network(object):
             if not os.path.exists("lib"):
                 os.makedirs("lib")
             if not os.path.exists("lib/bindings"):
-                shutil.copytree(f"{os.path.dirname(__file__)}/templates/lib/bindings", "lib/bindings")
+                shutil.copytree(
+                    f"{os.path.dirname(__file__)}/templates/lib/bindings", "lib/bindings")
             if not os.path.exists(os.getcwd()+"/lib/tom-select"):
-                shutil.copytree(f"{os.path.dirname(__file__)}/templates/lib/tom-select", "lib/tom-select")
+                shutil.copytree(
+                    f"{os.path.dirname(__file__)}/templates/lib/tom-select", "lib/tom-select")
             if not os.path.exists(os.getcwd()+"/lib/vis-9.1.2"):
-                shutil.copytree(f"{os.path.dirname(__file__)}/templates/lib/vis-9.1.2", "lib/vis-9.1.2")
+                shutil.copytree(
+                    f"{os.path.dirname(__file__)}/templates/lib/vis-9.1.2", "lib/vis-9.1.2")
             with open(getcwd_name, "w+") as out:
                 out.write(self.html)
         elif self.cdn_resources == "in_line" or self.cdn_resources == "remote":
@@ -548,11 +556,10 @@ class Network(object):
                 out.write(self.html)
         else:
             assert "cdn_resources is not in ['in_line','remote','local']."
-        if open_browser: # open the saved file in a new browser window.
+        if open_browser:  # open the saved file in a new browser window.
             webbrowser.open(getcwd_name)
 
-
-    def show(self, name, local=True,notebook=True):
+    def show(self, name, local=True, notebook=True):
         """
         Writes a static HTML file and saves it locally before opening.
 
@@ -560,7 +567,7 @@ class Network(object):
         :type name: str
         """
         if notebook:
-            self.write_html(name, open_browser=False,notebook=True)
+            self.write_html(name, open_browser=False, notebook=True)
         else:
             self.write_html(name, open_browser=True)
         if notebook:
@@ -585,7 +592,8 @@ class Network(object):
             self.set_template(custom_template_path)
         # with open(self.path) as html:
         #     content = html.read()
-        self.template = self.templateEnv.get_template(self.path)  # Template(content)
+        self.template = self.templateEnv.get_template(
+            self.path)  # Template(content)
 
     def set_template(self, path_to_template: str):
         """
@@ -606,7 +614,8 @@ class Network(object):
         """
         self.path = template_file
         self.template_dir = template_directory
-        self.templateEnv = Environment(loader=FileSystemLoader(self.template_dir))
+        self.templateEnv = Environment(
+            loader=FileSystemLoader(self.template_dir))
 
     def from_DOT(self, dot):
         """
@@ -675,7 +684,7 @@ class Network(object):
         return self.get_adj_list()[node]
 
     def from_nx(self, nx_graph, node_size_transf=(lambda x: x), edge_weight_transf=(lambda x: x),
-                default_node_size =10, default_edge_weight=1, show_edge_weights=True, edge_scaling=False):
+                default_node_size=10, default_edge_weight=1, show_edge_weights=True, edge_scaling=False):
         """
         This method takes an exisitng Networkx graph and translates
         it to a PyVis graph format that can be accepted by the VisJs
@@ -703,18 +712,20 @@ class Network(object):
         >>> nt.from_nx(nx_graph)
         >>> nt.show("nx.html")
         """
-        assert(isinstance(nx_graph, nx.Graph))
-        edges=nx_graph.edges(data = True)
-        nodes=nx_graph.nodes(data = True)
+        assert (isinstance(nx_graph, nx.Graph))
+        edges = nx_graph.edges(data=True)
+        nodes = nx_graph.nodes(data=True)
 
         if len(edges) > 0:
             for e in edges:
                 if 'size' not in nodes[e[0]].keys():
-                    nodes[e[0]]['size']=default_node_size
-                nodes[e[0]]['size']=int(node_size_transf(nodes[e[0]]['size']))
+                    nodes[e[0]]['size'] = default_node_size
+                nodes[e[0]]['size'] = int(
+                    node_size_transf(nodes[e[0]]['size']))
                 if 'size' not in nodes[e[1]].keys():
-                    nodes[e[1]]['size']=default_node_size
-                nodes[e[1]]['size']=int(node_size_transf(nodes[e[1]]['size']))
+                    nodes[e[1]]['size'] = default_node_size
+                nodes[e[1]]['size'] = int(
+                    node_size_transf(nodes[e[1]]['size']))
                 self.add_node(e[0], **nodes[e[0]])
                 self.add_node(e[1], **nodes[e[1]])
 
@@ -923,7 +934,7 @@ class Network(object):
         panning of the network easy.
 
         :param status: True if edges should be hidden on drag
-        
+
         :type status: bool
         """
         self.options.interaction.hideEdgesOnDrag = status
@@ -1017,7 +1028,7 @@ class Network(object):
 
         :param options: The string representation of the Javascript-like object
                         to be used to override default options.
-        
+
         :type options: str
         """
         self.options = self.options.set(options)

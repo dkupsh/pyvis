@@ -301,11 +301,19 @@
           </div>
         </div>
       </div>
-      {% endif %} {% if adg_visualization_type == 2 %}
-      <div id="ml-menu" class="card-header">
-        <div class="row no-gutters">
-          <div class="col-md-4">
-            <div class="form-check form-switch">
+      {% endif %} {% if adg_visualization_type == 2 %}<div id="ml-menu" class="card-header position-relative">
+      <!-- Top-right STOP box -->
+      <div class="position-absolute top-0 end-0 m-2 d-flex flex-column align-items-center">
+        <div id="stop-box-container" class="bg-dark border border-dark rounded p-2 d-flex flex-column align-items-center">
+          <div id="stop-box" class="rounded mb-1" style="width:40px; height:40px; background-color: red;"></div>
+          <div><small class="text-white fw-bold">STOP</small></div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row g-3">
+          <!-- Column 1: Show toggles -->
+          <div class="col-12 col-sm-6">
+            <div class="form-check form-switch mb-2">
               <input
                 class="form-check-input"
                 type="checkbox"
@@ -321,50 +329,82 @@
               <input
                 class="form-check-input"
                 type="checkbox"
-                onChange="updateProbability();"
                 id="probabilityCheckbox"
+                onChange="updateProbability();"
               />
               <label class="form-check-label" for="probabilityCheckbox">
                 Show Probabilities
               </label>
             </div>
           </div>
-        </div>
-        <div class="row no-gutters">
-          <div class="col-md-9">
-            <input
-              type="range"
-              class="form-range"
-              min="0"
-              max="25"
-              step="1"
-              value="0"
-              onchange="updateStep(value);"
-              id="stepRange"
-            />
-          </div>
-          <div class="col-md-2">
-            <span class="text-center" id="stepValue"> Step 0 </span>
-          </div>
-        </div>
-        <div class="row no-gutters">
-          <div class="col-lg-2 mx-1 border bg-dark border-dark rounded">
-            <span class="text-white" id="rewardText"> Reward: </span>
-          </div>
-          <div class="col-lg-2 mx-1 border bg-dark border-dark rounded">
-            <span class="text-white" id="areaText"> Area: </span>
-          </div>
-          <div class="col-lg-2 mx-1 border bg-dark border-dark rounded">
-            <span class="text-white" id="performanceText"> Performance: </span>
-          </div>
-          <div class="col-lg-2 mx-1 border bg-dark border-dark rounded">
-            <span class="text-white" id="nodesText"> Nodes: </span>
-          </div>
-          <div class="col-lg-2 mx-1 border bg-dark border-dark rounded">
-            <span class="text-white" id="linksText"> Links: </span>
+
+          <!-- Column 2: Highlight toggles -->
+          <div class="col-12 col-sm-6">
+            <div class="form-check form-switch mb-2">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="nextActionCheckbox"
+                onChange="updateNextAction();"
+                checked
+              />
+              <label class="form-check-label" for="nextActionCheckbox">
+                Highlight Next Action
+              </label>
+            </div>
+            <div class="form-check form-switch">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="nextPredictedCheckbox"
+                onChange="updateNextPredicted();"
+                checked
+              />
+              <label class="form-check-label" for="nextPredictedCheckbox">
+                Highlight Next Predicted
+              </label>
+            </div>
           </div>
         </div>
       </div>
+
+      <div class="row no-gutters mt-3">
+        <div class="col-md-9">
+          <input
+            type="range"
+            class="form-range"
+            min="0"
+            max="25"
+            step="1"
+            value="0"
+            onchange="updateStep(value);"
+            id="stepRange"
+          />
+        </div>
+        <div class="col-md-2">
+          <span class="text-center" id="stepValue"> Step 0 </span>
+        </div>
+      </div>
+
+      <div class="row no-gutters mt-3">
+        <div class="col-lg-2 mx-1 border bg-dark rounded">
+          <span class="text-white" id="rewardText"> Reward: </span>
+        </div>
+        <div class="col-lg-2 mx-1 border bg-dark rounded">
+          <span class="text-white" id="areaText"> Area: </span>
+        </div>
+        <div class="col-lg-2 mx-1 border bg-dark rounded">
+          <span class="text-white" id="performanceText"> Performance: </span>
+        </div>
+        <div class="col-lg-2 mx-1 border bg-dark rounded">
+          <span class="text-white" id="nodesText"> Nodes: </span>
+        </div>
+        <div class="col-lg-2 mx-1 border bg-dark rounded">
+          <span class="text-white" id="linksText"> Links: </span>
+        </div>
+      </div>
+    </div>
+
       {% endif %} {% if select_menu %}
       <div id="select-menu" class="card-header">
         <div class="row no-gutters">
@@ -519,6 +559,8 @@
           let dfg_selector = document.getElementById("select-dfg");
           let utilization_checkbox = document.getElementById("utilizationCheckbox");
           let probability_checkbox = document.getElementById("probabilityCheckbox");
+          let next_action_checkbox = document.getElementById("nextActionCheckbox");
+          let next_predicted_checkbox = document.getElementById("nextPredictedCheckbox");
           let step_slider = document.getElementById("stepRange");
           let step_text = document.getElementById("stepValue");
 
@@ -577,6 +619,22 @@
               value = probability_checkbox.checked;
               if (value != ml_options['showProbability']) {
                   ml_options['showProbability'] = value;
+                  updateColors();
+              }
+          }
+
+          function updateNextAction() {
+              value = next_action_checkbox.checked;
+              if (value != ml_options['showNextAction']) {
+                  ml_options['showNextAction'] = value;
+                  updateColors();
+              }
+          }
+
+          function updateNextPredicted() {
+              value = next_predicted_checkbox.checked;
+              if (value != ml_options['showNextPredicted']) {
+                  ml_options['showNextPredicted'] = value;
                   updateColors();
               }
           }
@@ -738,6 +796,8 @@
             showUtilization : false,
             showProbability : false,
             showGrey : false,
+            showNextPredicted : true,
+            showNextAction : true,
             step : 0
           }
 
@@ -748,8 +808,12 @@
             window.attachEvent('onload',setDefaultValues); //IE
           }
 
+          let stop_box = document.getElementById("stop-box");
+          let stop_box_container = document.getElementById("stop-box-container");
           let utilization_checkbox = document.getElementById("utilizationCheckbox");
           let probability_checkbox = document.getElementById("probabilityCheckbox");
+          let next_action_checkbox = document.getElementById("nextActionCheckbox");
+          let next_predicted_checkbox = document.getElementById("nextPredictedCheckbox");
           let step_slider = document.getElementById("stepRange");
           let step_text = document.getElementById("stepValue");
 
@@ -765,6 +829,23 @@
             step_slider.value = dse_options['step'];
 
             setSliderMax();
+            value = utilization_checkbox.checked;
+            if (value != dse_options['showUtilization']) {
+                dse_options['showUtilization'] = value;
+            }
+            value = probability_checkbox.checked;
+            if (value != dse_options['showProbability']) {
+                dse_options['showProbability'] = value;
+            }
+            value = next_action_checkbox.checked;
+            if (value != dse_options['showNextAction']) {
+                dse_options['showNextAction'] = value;
+            }
+            value = next_predicted_checkbox.checked;
+            if (value != dse_options['showNextPredicted']) {
+                dse_options['showNextPredicted'] = value;
+            }
+            updateGraph();
           }
 
           function setSliderMax() {
@@ -803,10 +884,51 @@
             }
         }
 
+        function updateNextAction() {
+              value = next_action_checkbox.checked;
+              if (value != dse_options['showNextAction']) {
+                  dse_options['showNextAction'] = value;
+                  updateGraph();
+              }
+          }
+
+        function updateNextPredicted() {
+            value = next_predicted_checkbox.checked;
+            if (value != dse_options['showNextPredicted']) {
+                dse_options['showNextPredicted'] = value;
+                updateGraph();
+            }
+        }
+
           function updateGraph() {
             updateText();
             updateNodes();
             updateEdges();
+            updateStop();
+          }
+
+
+          function updateStop() {
+            step = dse_options['step'];
+            color = adg_properties['stop']['probability_color'][step];
+            let actionVal = adg_properties['stop']['action'][step];
+            let predictedVal = adg_properties['stop']['max_probability'][step];
+
+            is_next_action = (actionVal === 'true') ? true : (actionVal === 'false') ? false : actionVal;
+            is_next_predicted = (predictedVal === 'true') ? true : (predictedVal === 'false') ? false : predictedVal;
+
+            stop_box.style.backgroundColor = color;
+            if (is_next_action && is_next_predicted && showMaxProbability && showNextStep) {
+                stop_box.style.boxShadow = `0 0 0px 5px ${adg_properties['both_highlight_color']}`;
+            } else if (is_next_action && showNextStep) {
+                stop_box.style.boxShadow = `0 0 0px 5px ${adg_properties['next_action_highlight_color']}`;
+            } else if (is_next_predicted && showMaxProbability) {
+                stop_box.style.boxShadow = `0 0 0px 5px ${adg_properties['most_likely_highlight_color']}`;
+            } else {
+                stop_box.style.boxShadow = "0 0 0px 0px black";
+            }
+
+
           }
 
           function updateText() {
@@ -861,6 +983,8 @@
           utilization = dse_options['showUtilization'];
           probabilities = dse_options['showProbability'];
           showGrey = dse_options['showGrey'];
+          showMaxProbability = dse_options['showNextPredicted'];
+          showNextStep = dse_options['showNextAction'];
 
           for (let nodeId in allNodes) {
               if (!allNodes.hasOwnProperty(nodeId)) {
@@ -879,11 +1003,27 @@
                 allNodes[nodeId].color = allNodes[nodeId].base_color;
               }
 
-              if (allNodes[nodeId].action[step]) {
+
+              if (allNodes[nodeId].max_probability[step] && allNodes[nodeId].action[step] && showMaxProbability && showNextStep) {
+                allNodes[nodeId].borderWidth = adg_properties['node_highlight_width'];
                 allNodes[nodeId].color = {
                   background: allNodes[nodeId].color,
-                  border: adg_properties['node_highlight_color'],
+                  border: adg_properties['both_highlight_color'],
                 }
+              } else if (allNodes[nodeId].max_probability[step] && showMaxProbability) {
+                allNodes[nodeId].borderWidth = adg_properties['node_highlight_width'];
+                allNodes[nodeId].color = {
+                  background: allNodes[nodeId].color,
+                  border: adg_properties['most_likely_highlight_color'],
+                }
+              } else if (allNodes[nodeId].action[step] && showNextStep) {
+                allNodes[nodeId].borderWidth = adg_properties['node_highlight_width'];
+                allNodes[nodeId].color = {
+                  background: allNodes[nodeId].color,
+                  border: adg_properties['next_action_highlight_color'],
+                }
+              } else {
+                allNodes[nodeId].borderWidth = allNodes[nodeId].base_border_width;
               }
 
               updateNodeArray.push(allNodes[nodeId]);
@@ -898,6 +1038,8 @@
         utilization = dse_options['showUtilization'];
         probabilities = dse_options['showProbability'];
         showGrey = dse_options['showGrey'];
+        showMaxProbability = dse_options['showNextPredicted'];
+        showNextStep = dse_options['showNextAction'];
 
 
         for (let edgeId in allEdges) {
@@ -917,9 +1059,15 @@
                 allEdges[edgeId].color = allEdges[edgeId].base_color;
             }
 
-            if (allEdges[edgeId].action[step]) {
+            if (allEdges[edgeId].max_probability[step] && allEdges[edgeId].action[step] && showMaxProbability && showNextStep) {
               allEdges[edgeId].width =  adg_properties['link_highlight_width'];
-              allEdges[edgeId].color = adg_properties['link_highlight_color'];
+              allEdges[edgeId].color = adg_properties['both_highlight_color'];
+            } else if (allEdges[edgeId].max_probability[step] && showMaxProbability) {
+              allEdges[edgeId].width =  adg_properties['link_highlight_width'];
+              allEdges[edgeId].color = adg_properties['most_likely_highlight_color'];
+            } else if (allEdges[edgeId].action[step] && showNextStep) {
+              allEdges[edgeId].width =  adg_properties['link_highlight_width'];
+              allEdges[edgeId].color = adg_properties['next_action_highlight_color'];
             } else {
               allEdges[edgeId].width = allEdges[edgeId].base_width;
             }
