@@ -35,11 +35,11 @@ class Network(object):
                  select_menu=False,
                  filter_menu=False,
                  adg_visualization_type=0,
+                 adg_files=[],
+                 dfg_files={},
                  adg_properties={},
-                 step_properties=[],
-                 dfg_files=[""],
-                 dfg_steps=[('', 0)],
-                 dfg_info={"": {}},
+                 dse_stop_properties={},
+                 step_properties={},
                  bgcolor="#ffffff",
                  font_color=False,
                  layout=None,
@@ -95,11 +95,11 @@ class Network(object):
         self.select_menu = select_menu
         self.filter_menu = filter_menu
         self.adg_visualization_type = adg_visualization_type
-        self.adg_properties = adg_properties
-        self.step_properties = step_properties
+        self.adg_files = adg_files
         self.dfg_files = dfg_files
-        self.dfg_steps = dfg_steps
-        self.dfg_info = dfg_info
+        self.adg_properties = adg_properties
+        self.dse_stop_properties = dse_stop_properties
+        self.step_properties = step_properties
         assert cdn_resources in [
             "local", "in_line", "remote"], "cdn_resources not in [local, in_line, remote]."
         # path is the root template located in the template_dir
@@ -510,11 +510,11 @@ class Network(object):
                                     select_menu=self.select_menu,
                                     filter_menu=self.filter_menu,
                                     adg_visualization_type=self.adg_visualization_type,
-                                    adg_properties=self.adg_properties,
-                                    step_properties=self.step_properties,
+                                    adg_files=self.adg_files,
                                     dfg_files=self.dfg_files,
-                                    dfg_steps=self.dfg_steps,
-                                    dfg_info=self.dfg_info,
+                                    adg_properties=self.adg_properties,
+                                    dse_stop_properties=self.dse_stop_properties,
+                                    step_properties=self.step_properties,
                                     notebook=notebook,
                                     cdn_resources=self.cdn_resources
                                     )

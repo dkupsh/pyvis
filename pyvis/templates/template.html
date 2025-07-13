@@ -1,1355 +1,1738 @@
 <html>
-  <head>
-    <meta charset="utf-8" />
-    {% if cdn_resources=="local" %}
-    <script src="lib/bindings/utils.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css"
-      integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js"
-      integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    {% if select_menu or filter_menu %}
-    <link href="lib/tom-select/tom-select.css" rel="stylesheet" />
-    <script src="lib/tom-select/tom-select.complete.min.js"></script>
-    {% endif %} {% elif cdn_resources=="in_line" %}
-    <script>
-      {%  include 'lib/bindings/utils.js' %}
-    </script>
-    <style>
-      {%  include 'lib/vis-9.1.2/vis-network.css' %}
-    </style>
-    <script>
-      {%  include 'lib/vis-9.1.2/vis-network.min.js' %}
-    </script>
-    {% if select_menu or filter_menu %}
-    <style>
-      {%  include 'lib/tom-select/tom-select.css' %}
-    </style>
-    <script>
-      {%  include 'lib/tom-select/tom-select.complete.min.js' %}
-    </script>
-    {% endif %} {% elif cdn_resources=="remote" %}
-    <script>
-      {%  include 'lib/bindings/utils.js' %}
-    </script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css"
-      integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js"
-      integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    {#
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.0.4/dist/dist/vis-network.min.css"
-      integrity="sha512-+5tJeVsSE2tSnmKB5SWOD0GsYA5dOP0B/FSv7I2GYhdOcyjJq81Q1St3qgJgInwreAdNuw0KGJ0FOaxOJ0E4yw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    #} {#
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.0.4/dist/vis-network.js"
-      #}
-      {#
-      integrity="sha512-CEbUhbSq35hCqBH8ckfAkH1Tcua5NEywtEzwiJ+BUC4EIZkC7vyta3ivZu/WqJhK1qHTurO3hwHsErU3HHjwIA=="
-      #}
-      {#
-      crossorigin="anonymous"
-      #}
-      {#
-      referrerpolicy="no-referrer"
-    ></script>
-    #} {% if select_menu or filter_menu %}
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/tom-select/2.0.0-rc.4/css/tom-select.min.css"
-      integrity="sha512-43fHB3GLgZfz8QXl1RPQ8O66oIgv3po9cJ5erMt1c4QISq9dYb195T3vr5ImnJPXuVroKcGBPXBFKETW8jrPNQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/tom-select/2.0.0-rc.4/js/tom-select.complete.js"
-      integrity="sha512-jeF9CfnvzDiw9G9xiksVjxR2lib44Gnovvkv+3CgCG6NXCD4gqlA5nDAVW5WjpA+i+/zKsUWV5xNEbW1X/HH0Q=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    {% endif %} {% endif %}
-    <center>
-      <h1>{{heading}}</h1>
-    </center>
+	<head>
+		<meta charset="utf-8" />
+		{% if cdn_resources=="local" %}
+		<script src="lib/bindings/utils.js"></script>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css"
+			integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js"
+			integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
+		{% if select_menu or filter_menu %}
+		<link href="lib/tom-select/tom-select.css" rel="stylesheet" />
+		<script src="lib/tom-select/tom-select.complete.min.js"></script>
+		{% endif %} {% elif cdn_resources=="in_line" %}
+		<script>
+			{%  include 'lib/bindings/utils.js' %}
+		</script>
+		<style>
+			{%  include 'lib/vis-9.1.2/vis-network.css' %}
+		</style>
+		<script>
+			{%  include 'lib/vis-9.1.2/vis-network.min.js' %}
+		</script>
+		{% if select_menu or filter_menu %}
+		<style>
+			{%  include 'lib/tom-select/tom-select.css' %}
+		</style>
+		<script>
+			{%  include 'lib/tom-select/tom-select.complete.min.js' %}
+		</script>
+		{% endif %} {% elif cdn_resources=="remote" %}
+		<script>
+			{%  include 'lib/bindings/utils.js' %}
+		</script>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css"
+			integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js"
+			integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
+		{#
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.0.4/dist/dist/vis-network.min.css"
+			integrity="sha512-+5tJeVsSE2tSnmKB5SWOD0GsYA5dOP0B/FSv7I2GYhdOcyjJq81Q1St3qgJgInwreAdNuw0KGJ0FOaxOJ0E4yw=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
+		#} {#
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.0.4/dist/vis-network.js"
+			#}
+			{#
+			integrity="sha512-CEbUhbSq35hCqBH8ckfAkH1Tcua5NEywtEzwiJ+BUC4EIZkC7vyta3ivZu/WqJhK1qHTurO3hwHsErU3HHjwIA=="
+			#}
+			{#
+			crossorigin="anonymous"
+			#}
+			{#
+			referrerpolicy="no-referrer"
+		></script>
+		#} {% if select_menu or filter_menu %}
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/tom-select/2.0.0-rc.4/css/tom-select.min.css"
+			integrity="sha512-43fHB3GLgZfz8QXl1RPQ8O66oIgv3po9cJ5erMt1c4QISq9dYb195T3vr5ImnJPXuVroKcGBPXBFKETW8jrPNQ=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/tom-select/2.0.0-rc.4/js/tom-select.complete.js"
+			integrity="sha512-jeF9CfnvzDiw9G9xiksVjxR2lib44Gnovvkv+3CgCG6NXCD4gqlA5nDAVW5WjpA+i+/zKsUWV5xNEbW1X/HH0Q=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
+		{% endif %} {% endif %}
+		<center>
+			<h1>{{heading}}</h1>
+		</center>
 
-    <!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+		<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
 <script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
-      crossorigin="anonymous"
-    ></script>
-
-    <center>
-      <h1>{{heading}}</h1>
-    </center>
-    <style type="text/css">
-
-         #mynetwork {
-             width: {{width}};
-             height: {{height}};
-             background-color: {{bgcolor}};
-             border: 1px solid lightgray;
-             position: relative;
-             float: left;
-         }
-
-         {% if nodes|length > 100 and physics_enabled %}
-         #loadingBar {
-             position:absolute;
-             top:0px;
-             left:0px;
-             width: {{width}};
-             height: {{height}};
-             background-color:rgba(200,200,200,0.8);
-             -webkit-transition: all 0.5s ease;
-             -moz-transition: all 0.5s ease;
-             -ms-transition: all 0.5s ease;
-             -o-transition: all 0.5s ease;
-             transition: all 0.5s ease;
-             opacity:1;
-         }
-
-         #bar {
-             position:absolute;
-             top:0px;
-             left:0px;
-             width:20px;
-             height:20px;
-             margin:auto auto auto auto;
-             border-radius:11px;
-             border:2px solid rgba(30,30,30,0.05);
-             background: rgb(0, 173, 246); /* Old browsers */
-             box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
-         }
-
-         #border {
-             position:absolute;
-             top:10px;
-             left:10px;
-             width:500px;
-             height:23px;
-             margin:auto auto auto auto;
-             box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
-             border-radius:10px;
-         }
-
-         #text {
-             position:absolute;
-             top:8px;
-             left:530px;
-             width:30px;
-             height:50px;
-             margin:auto auto auto auto;
-             font-size:22px;
-             color: #000000;
-         }
-
-         div.outerBorder {
-             position:relative;
-             top:400px;
-             width:600px;
-             height:44px;
-             margin:auto auto auto auto;
-             border:8px solid rgba(0,0,0,0.1);
-             background: rgb(252,252,252); /* Old browsers */
-             background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
-             background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
-             background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
-             background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
-             background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
-             background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
-             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
-             border-radius:72px;
-             box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
-         }
-         {% endif %}
-
-         {% if conf %}
-         #config {
-             float: left;
-             width: 400px;
-             height: 600px;
-         }
-         {% endif %}
-
-         {% if tooltip_link %}
-         /* position absolute is important and the container has to be relative or absolute as well. */
-      div.popup {
-             position:absolute;
-             top:0px;
-             left:0px;
-             display:none;
-             background-color:#f5f4ed;
-             -moz-border-radius: 3px;
-             -webkit-border-radius: 3px;
-             border-radius: 3px;
-             border: 1px solid #808074;
-             box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
-      }
-
-      /* hide the original tooltip */
-      .vis-tooltip {
-        display:none;
-      }
-         {% endif %}
-    </style>
-  </head>
-
-  <body>
-    <div class="card" style="width: 100%">
-      {% if adg_visualization_type == 1 %}
-      <div id="ml-menu" class="card-header">
-        <div class="row no-gutters">
-          <div class="col-md-8">
-            <select
-              class="form-select"
-              onchange="selectDFG([value]);"
-              id="select-dfg"
-              placeholder="Select DFG..."
-            >
-              {% for dfg in dfg_files %}
-              <option value="{{ dfg }}">{{dfg}}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="col-md-4">
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="utilizationCheckbox"
-                onChange="updateUtilization();"
-                checked
-              />
-              <label class="form-check-label" for="utilizationCheckbox">
-                Show Utilizations
-              </label>
-            </div>
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                onChange="updateProbability();"
-                id="probabilityCheckbox"
-              />
-              <label class="form-check-label" for="probabilityCheckbox">
-                Show Probabilities
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="row no-gutters">
-          <div class="col-md-9">
-            <input
-              type="range"
-              class="form-range"
-              min="-1"
-              max="25"
-              step="1"
-              value="-1"
-              onchange="updateStep(value);"
-              id="stepRange"
-            />
-          </div>
-          <div class="col-md-2">
-            <span class="text-center" id="stepValue"> Base ADG </span>
-          </div>
-        </div>
-        <div class="row no-gutters">
-          <div class="col-lg-2 mx-1 border bg-dark border-dark rounded">
-            <span class="text-white" id="rewardText"> Reward: </span>
-          </div>
-          <div class="col-lg-2 mx-1 border bg-dark border-dark rounded">
-            <span class="text-white" id="overprovText"> Overprov: </span>
-          </div>
-          <div class="col-lg-2 mx-1 border bg-dark border-dark rounded">
-            <span class="text-white" id="violationText"> Violation: </span>
-          </div>
-          <div class="col-lg-2 mx-1 border bg-dark border-dark rounded">
-            <span class="text-white" id="latencyText"> Latency: </span>
-          </div>
-          <div class="col-lg-2 mx-1 border bg-dark border-dark rounded">
-            <span class="text-white" id="linksText"> Links: </span>
-          </div>
-        </div>
-      </div>
-      {% endif %} {% if adg_visualization_type == 2 %}<div id="ml-menu" class="card-header position-relative">
-      <!-- Top-right STOP box -->
-      <div class="position-absolute top-0 end-0 m-2 d-flex flex-column align-items-center">
-        <div id="stop-box-container" class="bg-dark border border-dark rounded p-2 d-flex flex-column align-items-center">
-          <div id="stop-box" class="rounded mb-1" style="width:40px; height:40px; background-color: red;"></div>
-          <div><small class="text-white fw-bold">STOP</small></div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="row g-3">
-          <!-- Column 1: Show toggles -->
-          <div class="col-12 col-sm-6">
-            <div class="form-check form-switch mb-2">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="utilizationCheckbox"
-                onChange="updateUtilization();"
-                checked
-              />
-              <label class="form-check-label" for="utilizationCheckbox">
-                Show Utilizations
-              </label>
-            </div>
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="probabilityCheckbox"
-                onChange="updateProbability();"
-              />
-              <label class="form-check-label" for="probabilityCheckbox">
-                Show Probabilities
-              </label>
-            </div>
-          </div>
-
-          <!-- Column 2: Highlight toggles -->
-          <div class="col-12 col-sm-6">
-            <div class="form-check form-switch mb-2">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="nextActionCheckbox"
-                onChange="updateNextAction();"
-                checked
-              />
-              <label class="form-check-label" for="nextActionCheckbox">
-                Highlight Next Action
-              </label>
-            </div>
-            <div class="form-check form-switch">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="nextPredictedCheckbox"
-                onChange="updateNextPredicted();"
-                checked
-              />
-              <label class="form-check-label" for="nextPredictedCheckbox">
-                Highlight Next Predicted
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row no-gutters mt-3">
-        <div class="col-md-9">
-          <input
-            type="range"
-            class="form-range"
-            min="0"
-            max="25"
-            step="1"
-            value="0"
-            onchange="updateStep(value);"
-            id="stepRange"
-          />
-        </div>
-        <div class="col-md-2">
-          <span class="text-center" id="stepValue"> Step 0 </span>
-        </div>
-      </div>
-
-      <div class="row no-gutters mt-3">
-        <div class="col-lg-2 mx-1 border bg-dark rounded">
-          <span class="text-white" id="rewardText"> Reward: </span>
-        </div>
-        <div class="col-lg-2 mx-1 border bg-dark rounded">
-          <span class="text-white" id="areaText"> Area: </span>
-        </div>
-        <div class="col-lg-2 mx-1 border bg-dark rounded">
-          <span class="text-white" id="performanceText"> Performance: </span>
-        </div>
-        <div class="col-lg-2 mx-1 border bg-dark rounded">
-          <span class="text-white" id="nodesText"> Nodes: </span>
-        </div>
-        <div class="col-lg-2 mx-1 border bg-dark rounded">
-          <span class="text-white" id="linksText"> Links: </span>
-        </div>
-      </div>
-    </div>
-
-      {% endif %} {% if select_menu %}
-      <div id="select-menu" class="card-header">
-        <div class="row no-gutters">
-          <div class="col-10 pb-2">
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              onchange="selectNode([value]);"
-              id="select-node"
-              placeholder="Select node..."
-            >
-              <option selected>Select a Node by ID</option>
-              {% for node in nodes %}
-              <option value="{{ node.id }}">{{node.id}}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="col-2 pb-2">
-            <button
-              type="button"
-              class="btn btn-primary btn-block"
-              onclick="neighbourhoodHighlight({nodes: []});"
-            >
-              Reset Selection
-            </button>
-          </div>
-        </div>
-      </div>
-      {% endif %} {% if filter_menu %}
-      <div id="filter-menu" class="card-header">
-        <div class="row no-gutters">
-          <div class="col-3 pb-2">
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              onchange="updateFilter(value, 'item')"
-              id="select-item"
-            >
-              <option value="">Select a network item</option>
-              <option value="edge">edge</option>
-              <option value="node">node</option>
-            </select>
-          </div>
-          <div class="col-3 pb-2">
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              onchange="updateFilter(value, 'property')"
-              id="select-property"
-            >
-              <option value="">Select a property...</option>
-            </select>
-          </div>
-          <div class="col-3 pb-2">
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              id="select-value"
-            >
-              <option value="">Select value(s)...</option>
-            </select>
-          </div>
-          <div class="col-1 pb-2">
-            <button
-              type="button"
-              class="btn btn-primary btn-block"
-              onclick="highlightFilter(filter);"
-            >
-              Filter
-            </button>
-          </div>
-          <div class="col-2 pb-2">
-            <button
-              type="button"
-              class="btn btn-primary btn-block"
-              onclick="clearFilter(true)"
-            >
-              Reset Selection
-            </button>
-          </div>
-        </div>
-      </div>
-      {% endif %}
-      <div id="mynetwork" class="card-body"></div>
-    </div>
-
-    {% if nodes|length > 100 and physics_enabled %}
-    <div id="loadingBar">
-      <div class="outerBorder">
-        <div id="text">0%</div>
-        <div id="border">
-          <div id="bar"></div>
-        </div>
-      </div>
-    </div>
-    {% endif %} {% if conf %}
-    <div id="config"></div>
-    {% endif %}
-
-    <script type="text/javascript">
-
-        // initialize global variables.
-        var edges;
-        var nodes;
-        var allNodes;
-        var allEdges;
-        var nodeColors;
-        var originalNodes;
-        var network;
-        var container;
-        var options, data;
-        var filter = {
-            item : '',
-            property : '',
-            value : []
-        };
-
-        {% if select_menu %}
-            new TomSelect("#select-node",{
-                create: false,
-                sortField: {
-                    field: "text",
-                    direction: "asc"
-                }
-            });
-        {%  endif %}
-
-        {% if adg_visualization_type == 1 %}
-
-          var dfg_steps = {
-            {% for dfg in dfg_steps %}
-                {{ dfg[0] }}: {{ dfg[1]}},
-            {% endfor %}
-          };
-
-          var dfg_info = {{ dfg_info }};
-
-
-          var ml_options = {
-            dfg_file : '',
-            showUtilization : true,
-            showProbability : false,
-            step : -1
-          }
-
-          if (window.addEventListener) {
-              window.addEventListener('load',setDefaultValues, false); //W3C
-          } else {
-              window.attachEvent('onload',setDefaultValues); //IE
-          }
-
-          let dfg_selector = document.getElementById("select-dfg");
-          let utilization_checkbox = document.getElementById("utilizationCheckbox");
-          let probability_checkbox = document.getElementById("probabilityCheckbox");
-          let next_action_checkbox = document.getElementById("nextActionCheckbox");
-          let next_predicted_checkbox = document.getElementById("nextPredictedCheckbox");
-          let step_slider = document.getElementById("stepRange");
-          let step_text = document.getElementById("stepValue");
-
-
-          let reward_text = document.getElementById("rewardText");
-          let overprov_text = document.getElementById("overprovText");
-          let violation_text = document.getElementById("violationText");
-          let latency_text = document.getElementById("latencyText");
-          let links_text = document.getElementById("linksText");
-
-
-          function setDefaultValues() {
-              utilization_checkbox.checked = ml_options['showUtilization'];
-              probability_checkbox.checked = ml_options['showProbability'];
-              step_slider.value = ml_options['step'];
-              step_text.innerHTML = "Base ADG";
-
-              dfg_selector.value = dfg_selector.options[dfg_selector.selectedIndex].value;
-              ml_options['dfg_file'] = dfg_selector.value;
-
-              setSliderMax();
-
-          }
-
-          function getMaxSteps() {
-              return dfg_steps[ml_options['dfg_file']];
-          }
-
-          function setSliderMax() {
-              max_steps = dfg_steps[ml_options['dfg_file']];
-              if (parseInt(step_slider.value) > max_steps) {
-                  step_text.textContent = "Base ADG";
-                  step_slider.value = -1;
-              }
-
-              step_slider.max = dfg_steps[ml_options['dfg_file']];
-          }
-
-          function selectDFG(value) {
-              if (value != ml_options['dfg_file']) {
-                  ml_options['dfg_file'] = value;
-                  setSliderMax();
-                  updateColors();
-              }
-          }
-
-          function updateUtilization() {
-              value = utilization_checkbox.checked;
-              if (value != ml_options['showUtilization']) {
-                  ml_options['showUtilization'] = value;
-                  updateColors();
-              }
-          }
-
-          function updateProbability() {
-              value = probability_checkbox.checked;
-              if (value != ml_options['showProbability']) {
-                  ml_options['showProbability'] = value;
-                  updateColors();
-              }
-          }
-
-          function updateNextAction() {
-              value = next_action_checkbox.checked;
-              if (value != ml_options['showNextAction']) {
-                  ml_options['showNextAction'] = value;
-                  updateColors();
-              }
-          }
-
-          function updateNextPredicted() {
-              value = next_predicted_checkbox.checked;
-              if (value != ml_options['showNextPredicted']) {
-                  ml_options['showNextPredicted'] = value;
-                  updateColors();
-              }
-          }
-
-          function updateStep(value) {
-              new_step = parseInt(value);
-              if (new_step != ml_options['step']) {
-                  ml_options['step'] = new_step;
-
-                  if (new_step == -1) {
-                      step_text.textContent = "Base ADG";
-                  } else {
-                      step_text.textContent = "Step " + value;
-                  }
-
-                  updateColors();
-              }
-          }
-
-          function updateColors() {
-              updateText();
-              updateEdgeColors();
-              updateNodeColors();
-          }
-
-          function updateText() {
-              dfg_file = ml_options['dfg_file'];
-              step = ml_options['step'];
-
-              if (step == -1 || !dfg_info[dfg_file].hasOwnProperty(step)) {
-                  reward_text.textContent = "Reward:";
-                  overprov_text.textContent = "Overprov:";
-                  violation_text.textContent = "Violation:";
-                  latency_text.textContent = "Latency:";
-                  links_text.textContent = "Links:";
-              } else {
-                  info = dfg_info[dfg_file][step];
-
-                  if (info.hasOwnProperty('reward')) {
-                      reward_text.textContent = "Reward: " + (+info['reward'].toFixed(2));
-                  } else {
-                      reward_text.textContent = "Reward:";
-                  }
-
-                  if (info.hasOwnProperty('agg_overprovisioning')) {
-                      overprov_text.textContent = "Overprov: " + (+info['agg_overprovisioning'].toFixed(2));
-                  } else {
-                      overprov_text.textContent = "Overprov:";
-                  }
-
-                  if (info.hasOwnProperty('violation')) {
-                      violation_text.textContent = "Violation: " + (+info['violation'].toFixed(2));
-                  } else {
-                      violation_text.textContent = "Violation:";
-                  }
-
-                  if (info.hasOwnProperty('latency')) {
-                      latency_text.textContent = "Latency: " + (+info['latency'].toFixed(2));
-                  } else {
-                      latency_text.textContent = "Latency:";
-                  }
-
-                  if (info.hasOwnProperty('links_mapped')) {
-                      links_text.textContent = "Links: " + (+info['links_mapped'].toFixed(2));
-                  } else {
-                      links_text.textContent = "Links:";
-                  }
-              }
-          }
-
-          function updateEdgeColors() {
-              var updateEdgeArray = [];
-
-              dfg_file = ml_options['dfg_file'];
-              step = ml_options['step'];
-              utilization = ml_options['showUtilization']
-
-
-              for (let edgeId in allEdges) {
-                  if (!allEdges.hasOwnProperty(edgeId)) {
-                      console.log("edge not found: " + edgeId);
-                      continue;
-                  }
-
-                  if (step == -1) {
-                      allEdges[edgeId].color = allEdges[edgeId].base_color;
-                  } else {
-                      allEdges[edgeId].color = allEdges[edgeId].grey_color;
-
-                      if (utilization) {
-                          utilization_colors = allEdges[edgeId].utilization_colors[dfg_file]
-
-                          if (utilization_colors.hasOwnProperty(step)) {
-                              allEdges[edgeId].color = utilization_colors[step];
-                          }
-                      }
-                  }
-
-                  updateEdgeArray.push(allEdges[edgeId]);
-              }
-              edges.update(updateEdgeArray);
-          }
-
-          function updateNodeColors() {
-              var updateNodeArray = [];
-
-              dfg_file = ml_options['dfg_file'];
-              step = ml_options['step'];
-              utilization = ml_options['showUtilization']
-              probabilities = ml_options['showProbability']
-
-              for (let nodeId in allNodes) {
-                  if (!allNodes.hasOwnProperty(nodeId)) {
-                      console.log("nodeId not found: " + nodeId);
-                      continue;
-                  }
-
-                  if (step == -1) {
-                      allNodes[nodeId].color = allNodes[nodeId].base_color;
-                  } else {
-                      allNodes[nodeId].color = allNodes[nodeId].grey_color;
-
-                      if (probabilities) {
-                          probability_colors = allNodes[nodeId].probability_colors[dfg_file]
-
-                          if (probability_colors.hasOwnProperty(step)) {
-                              allNodes[nodeId].color = probability_colors[step];
-                          }
-                      }
-
-                      if (utilization) {
-                          utilization_colors = allNodes[nodeId].utilization_colors[dfg_file]
-
-                          if (utilization_colors.hasOwnProperty(step)) {
-                              allNodes[nodeId].color = utilization_colors[step];
-                          }
-                      }
-
-                      if (allNodes[nodeId]['highlight_step'][dfg_file].hasOwnProperty(step)) {
-                          allNodes[nodeId].color = {
-                              background: allNodes[nodeId].color,
-                              border: allNodes[nodeId]['highlight_step'][dfg_file][step],
-                          }
-                      }
-                  }
-
-
-                  updateNodeArray.push(allNodes[nodeId]);
-              }
-              nodes.update(updateNodeArray);
-          }
-        {%  endif %}
-
-
-        {% if adg_visualization_type == 2 %}
-          var adg_properties = {{ adg_properties }};
-          var step_properties = {{ step_properties }};
-          var dse_options = {
-            showUtilization : false,
-            showProbability : false,
-            showGrey : false,
-            showNextPredicted : true,
-            showNextAction : true,
-            step : 0
-          }
-
-
-          if (window.addEventListener) {
-            window.addEventListener('load',setDefaultValues, false); //W3C
-          } else {
-            window.attachEvent('onload',setDefaultValues); //IE
-          }
-
-          let stop_box = document.getElementById("stop-box");
-          let stop_box_container = document.getElementById("stop-box-container");
-          let utilization_checkbox = document.getElementById("utilizationCheckbox");
-          let probability_checkbox = document.getElementById("probabilityCheckbox");
-          let next_action_checkbox = document.getElementById("nextActionCheckbox");
-          let next_predicted_checkbox = document.getElementById("nextPredictedCheckbox");
-          let step_slider = document.getElementById("stepRange");
-          let step_text = document.getElementById("stepValue");
-
-          let reward_text = document.getElementById("rewardText");
-          let area_text = document.getElementById("areaText");
-          let performance_text = document.getElementById("performanceText");
-          let nodes_text = document.getElementById("nodesText");
-          let links_text = document.getElementById("linksText");
-
-          function setDefaultValues() {
-            utilization_checkbox.checked = dse_options['showUtilization'];
-            probability_checkbox.checked = dse_options['showProbability'];
-            step_slider.value = dse_options['step'];
-
-            setSliderMax();
-            value = utilization_checkbox.checked;
-            if (value != dse_options['showUtilization']) {
-                dse_options['showUtilization'] = value;
-            }
-            value = probability_checkbox.checked;
-            if (value != dse_options['showProbability']) {
-                dse_options['showProbability'] = value;
-            }
-            value = next_action_checkbox.checked;
-            if (value != dse_options['showNextAction']) {
-                dse_options['showNextAction'] = value;
-            }
-            value = next_predicted_checkbox.checked;
-            if (value != dse_options['showNextPredicted']) {
-                dse_options['showNextPredicted'] = value;
-            }
-            updateGraph();
-          }
-
-          function setSliderMax() {
-              max_steps = step_properties.length;
-              if (parseInt(step_slider.value) > max_steps) {
-                  step_text.textContent = "Step " + value;
-                  step_slider.value = 0;
-              }
-              step_slider.max = max_steps - 1;
-          }
-
-
-          function updateStep(value) {
-            new_step = parseInt(value);
-            if (new_step != dse_options['step']) {
-                dse_options['step'] = new_step;
-                step_text.textContent = "Step " + value;
-
-                updateGraph();
-            }
-          }
-
-          function updateUtilization() {
-            value = utilization_checkbox.checked;
-            if (value != dse_options['showUtilization']) {
-                dse_options['showUtilization'] = value;
-                updateGraph();
-            }
-        }
-
-        function updateProbability() {
-            value = probability_checkbox.checked;
-            if (value != dse_options['showProbability']) {
-                dse_options['showProbability'] = value;
-                updateGraph();
-            }
-        }
-
-        function updateNextAction() {
-              value = next_action_checkbox.checked;
-              if (value != dse_options['showNextAction']) {
-                  dse_options['showNextAction'] = value;
-                  updateGraph();
-              }
-          }
-
-        function updateNextPredicted() {
-            value = next_predicted_checkbox.checked;
-            if (value != dse_options['showNextPredicted']) {
-                dse_options['showNextPredicted'] = value;
-                updateGraph();
-            }
-        }
-
-          function updateGraph() {
-            updateText();
-            updateNodes();
-            updateEdges();
-            updateStop();
-          }
-
-
-          function updateStop() {
-            step = dse_options['step'];
-            color = adg_properties['stop']['probability_color'][step];
-            let actionVal = adg_properties['stop']['action'][step];
-            let predictedVal = adg_properties['stop']['max_probability'][step];
-
-            is_next_action = (actionVal === 'true') ? true : (actionVal === 'false') ? false : actionVal;
-            is_next_predicted = (predictedVal === 'true') ? true : (predictedVal === 'false') ? false : predictedVal;
-
-            stop_box.style.backgroundColor = color;
-            if (is_next_action && is_next_predicted && showMaxProbability && showNextStep) {
-                stop_box.style.boxShadow = `0 0 0px 5px ${adg_properties['both_highlight_color']}`;
-            } else if (is_next_action && showNextStep) {
-                stop_box.style.boxShadow = `0 0 0px 5px ${adg_properties['next_action_highlight_color']}`;
-            } else if (is_next_predicted && showMaxProbability) {
-                stop_box.style.boxShadow = `0 0 0px 5px ${adg_properties['most_likely_highlight_color']}`;
-            } else {
-                stop_box.style.boxShadow = "0 0 0px 0px black";
-            }
-
-
-          }
-
-          function updateText() {
-            step = dse_options['step'];
-            info = step_properties[step];
-
-            if (step >= step_properties.length || step < 0) {
-                reward_text.textContent = "Reward:";
-                area_text.textContent = "Area:";
-                performance_text.textContent = "Performance:";
-                nodes_text.textContent = "Nodes:";
-                links_text.textContent = "Links:";
-                return;
-            }
-
-            if (info.hasOwnProperty('reward')) {
-                reward_text.textContent = "Reward: " + (+info['reward'].toFixed(2));
-            } else {
-                reward_text.textContent = "Reward:";
-            }
-
-            if (info.hasOwnProperty('area')) {
-                area_text.textContent = "Area: " + (+info['area'].toFixed(2));
-            } else {
-              area_text.textContent = "Area:";
-            }
-
-            if (info.hasOwnProperty('performance')) {
-                performance_text.textContent = "Performance: " + (+info['performance'].toFixed(2));
-            } else {
-                performance_text.textContent = "Performance:";
-            }
-
-            if (info.hasOwnProperty('nodes')) {
-                nodes_text.textContent = "Nodes: " + (+info['nodes'].toFixed(2));
-            } else {
-                nodes_text.textContent = "Nodes:";
-            }
-
-            if (info.hasOwnProperty('links')) {
-                links_text.textContent = "Links: " + (+info['links'].toFixed(2));
-            } else {
-                links_text.textContent = "Links:";
-            }
-        }
-
-
-        function updateNodes() {
-          var updateNodeArray = [];
-
-          step = dse_options['step'];
-          utilization = dse_options['showUtilization'];
-          probabilities = dse_options['showProbability'];
-          showGrey = dse_options['showGrey'];
-          showMaxProbability = dse_options['showNextPredicted'];
-          showNextStep = dse_options['showNextAction'];
-
-          for (let nodeId in allNodes) {
-              if (!allNodes.hasOwnProperty(nodeId)) {
-                  console.log("nodeId not found: " + nodeId);
-                  continue;
-              }
-
-              allNodes[nodeId].hidden = allNodes[nodeId].hidden_step[step];
-              if (probabilities) {
-                allNodes[nodeId].color = allNodes[nodeId].probability_color[step];
-              } else if (utilization) {
-                allNodes[nodeId].color = allNodes[nodeId].utilization_color[step];
-              } else if (showGrey) {
-                allNodes[nodeId].color = allNodes[nodeId].grey_color;
-              } else {
-                allNodes[nodeId].color = allNodes[nodeId].base_color;
-              }
-
-
-              if (allNodes[nodeId].max_probability[step] && allNodes[nodeId].action[step] && showMaxProbability && showNextStep) {
-                allNodes[nodeId].borderWidth = adg_properties['node_highlight_width'];
-                allNodes[nodeId].color = {
-                  background: allNodes[nodeId].color,
-                  border: adg_properties['both_highlight_color'],
-                }
-              } else if (allNodes[nodeId].max_probability[step] && showMaxProbability) {
-                allNodes[nodeId].borderWidth = adg_properties['node_highlight_width'];
-                allNodes[nodeId].color = {
-                  background: allNodes[nodeId].color,
-                  border: adg_properties['most_likely_highlight_color'],
-                }
-              } else if (allNodes[nodeId].action[step] && showNextStep) {
-                allNodes[nodeId].borderWidth = adg_properties['node_highlight_width'];
-                allNodes[nodeId].color = {
-                  background: allNodes[nodeId].color,
-                  border: adg_properties['next_action_highlight_color'],
-                }
-              } else {
-                allNodes[nodeId].borderWidth = allNodes[nodeId].base_border_width;
-              }
-
-              updateNodeArray.push(allNodes[nodeId]);
-          }
-          nodes.update(updateNodeArray);
-      }
-
-      function updateEdges() {
-        var updateEdgeArray = [];
-
-        step = dse_options['step'];
-        utilization = dse_options['showUtilization'];
-        probabilities = dse_options['showProbability'];
-        showGrey = dse_options['showGrey'];
-        showMaxProbability = dse_options['showNextPredicted'];
-        showNextStep = dse_options['showNextAction'];
-
-
-        for (let edgeId in allEdges) {
-            if (!allEdges.hasOwnProperty(edgeId)) {
-                console.log("edge not found: " + edgeId);
-                continue;
-            }
-
-            allEdges[edgeId].hidden = allEdges[edgeId].hidden_step[step];
-            if (probabilities) {
-              allEdges[edgeId].color = allEdges[edgeId].probability_color[step];
-            } else if (utilization) {
-              allEdges[edgeId].color = allEdges[edgeId].utilization_color[step];
-            } else if (showGrey) {
-                allEdges[edgeId].color = allEdges[edgeId].grey_color;
-            } else {
-                allEdges[edgeId].color = allEdges[edgeId].base_color;
-            }
-
-            if (allEdges[edgeId].max_probability[step] && allEdges[edgeId].action[step] && showMaxProbability && showNextStep) {
-              allEdges[edgeId].width =  adg_properties['link_highlight_width'];
-              allEdges[edgeId].color = adg_properties['both_highlight_color'];
-            } else if (allEdges[edgeId].max_probability[step] && showMaxProbability) {
-              allEdges[edgeId].width =  adg_properties['link_highlight_width'];
-              allEdges[edgeId].color = adg_properties['most_likely_highlight_color'];
-            } else if (allEdges[edgeId].action[step] && showNextStep) {
-              allEdges[edgeId].width =  adg_properties['link_highlight_width'];
-              allEdges[edgeId].color = adg_properties['next_action_highlight_color'];
-            } else {
-              allEdges[edgeId].width = allEdges[edgeId].base_width;
-            }
-
-            updateEdgeArray.push(allEdges[edgeId]);
-        }
-        edges.update(updateEdgeArray);
-      }
-
-        {% endif %}
-
-        {% if filter_menu %}
-            // explicitly using onItemAdd and this function as we need to save multiple values
-            let updateValueFilter = function() {
-                return function () {
-                filter['value'].push(arguments[0])
-                }
-            }
-
-            let valueControl = new TomSelect("#select-value",{
-                maxItems: null,
-                valueField: 'id',
-                labelField: 'title',
-                searchField: 'title',
-                create: false,
-                sortField: {
-                    field: "text",
-                    direction: "asc"
-                },
-                onItemAdd: updateValueFilter()
-            });
-
-            let addValues = function() {
-                return function () {
-                    // clear the current value options and add the selected attribute values
-                    // tom-select handles duplicates
-                    let selectedProperty = arguments[0];
-                    valueControl.clear();
-                    valueControl.clearOptions();
-                    filter['value'] = []
-                    if (filter['item'] === 'node') {
-                        for (let each in allNodes) {
-                            valueControl.addOption({
-                                id:allNodes[each][selectedProperty],
-                                title:allNodes[each][selectedProperty]
-                            })
-                        }
-                    }
-                    else if (filter['item'] === 'edge') {
-                        for (let each in allEdges) {
-                            valueControl.addOption({
-                                id:allEdges[each][selectedProperty],
-                                title:allEdges[each][selectedProperty]
-                            })
-                        }
-                    }
-                }
-            };
-
-            let propControl = new TomSelect("#select-property",{
-                valueField: 'id',
-                labelField: 'title',
-                searchField: 'title',
-                create: false,
-                sortField: {
-                    field: "text",
-                    direction: "asc"
-                },
-                onItemAdd: addValues()
-            });
-
-            let addProperties = function() {
-                return function () {
-                    // loops through the selected network item and adds the attributes to dropdown
-                    // tom-select handles duplicates
-                    clearFilter(false)
-                    if (arguments[0] === 'edge') {
-                        for (let each in allEdges) {
-                            if (allEdges.hasOwnProperty(each)) {
-                                for (let eachProp in allEdges[each]) {
-                                    if (allEdges[each].hasOwnProperty(eachProp)) {
-                                        propControl.addOption({id: eachProp, title: eachProp})
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else if (arguments[0] === 'node') {
-                        for (let each in allNodes) {
-                            if (allNodes.hasOwnProperty(each)) {
-                                for (let eachProp in allNodes[each]) {
-                                    if (allNodes[each].hasOwnProperty(eachProp)
-                                        && (eachProp !== 'hidden' && eachProp !== 'savedLabel'
-                                            && eachProp !== 'hiddenLabel')) {
-                                        propControl.addOption({id: eachProp, title: eachProp})
-
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            };
-
-            let itemControl = new TomSelect("#select-item",{
-                create: false,
-                sortField:{
-                    field: "text",
-                    direction: "asc"
-                },
-                onItemAdd: addProperties()
-            });
-
-            function clearFilter(reset) {
-                // utility function to clear all the selected filter options
-                // if reset is set to true, the existing filter will be removed
-                // else, only the dropdown options are cleared
-                propControl.clear();
-                propControl.clearOptions();
-                valueControl.clear();
-                valueControl.clearOptions();
-                filter = {
-                    item : '',
-                    property : '',
-                    value : []
-                }
-                if (reset) {
-                    itemControl.clear();
-                    filterHighlight({nodes: []})
-                }
-            }
-
-            function updateFilter(value, key) {
-                // key could be 'item' or 'property' and value is as selected in dropdown
-                filter[key] = value
-            }
-
-        {%  endif %}
-
-        // This method is responsible for drawing the graph, returns the drawn network
-        function drawGraph() {
-            var container = document.getElementById('mynetwork');
-
-            {% if use_DOT %}
-
-            var DOTstring = "{{dot_lang|safe}}";
-            var parsedData = vis.network.convertDot(DOTstring);
-
-            data = {
-              nodes: parsedData.nodes,
-              edges: parsedData.edges
-            }
-
-            var options = parsedData.options;
-            options.nodes = {
-                shape: "dot"
-            }
-
-            {% else %}
-
-            // parsing and collecting nodes and edges from the python
-            nodes = new vis.DataSet({{nodes|tojson}});
-            edges = new vis.DataSet({{edges|tojson}});
-
-            nodeColors = {};
-            allNodes = nodes.get({ returnType: "Object" });
-            for (nodeId in allNodes) {
-              nodeColors[nodeId] = allNodes[nodeId].color;
-            }
-            allEdges = edges.get({ returnType: "Object" });
-            // adding nodes and edges to the graph
-            data = {nodes: nodes, edges: edges};
-
-            var options = {{options|safe}};
-
-            {% endif %}
-
-
-            {% if conf %}
-            // if this network requires displaying the configure window,
-            // put it in its div
-            options.configure["container"] = document.getElementById("config");
-            {% endif %}
-
-            network = new vis.Network(container, data, options);
-
-            {% if neighborhood_highlight %}
-              network.on("click", neighbourhoodHighlight);
-            {% endif %}
-
-            {% if select_menu %}
-              network.on("selectNode", neighbourhoodHighlight);
-            {% endif %}
-
-            {% if tooltip_link %}
-            // make a custom popup
-                var popup = document.createElement("div");
-                popup.className = 'popup';
-                popupTimeout = null;
-                popup.addEventListener('mouseover', function () {
-                    console.log(popup)
-                    if (popupTimeout !== null) {
-                        clearTimeout(popupTimeout);
-                        popupTimeout = null;
-                    }
-                });
-                popup.addEventListener('mouseout', function () {
-                    if (popupTimeout === null) {
-                        hidePopup();
-                    }
-                });
-                container.appendChild(popup);
-
-
-                // use the popup event to show
-                network.on("showPopup", function (params) {
-                    showPopup(params);
-                });
-
-                // use the hide event to hide it
-                network.on("hidePopup", function (params) {
-                    hidePopup();
-                });
-
-                // hiding the popup through css
-                function hidePopup() {
-                    popupTimeout = setTimeout(function () { popup.style.display = 'none'; }, 500);
-                }
-
-                // showing the popup
-                function showPopup(nodeId) {
-                    // get the data from the vis.DataSet
-                    var nodeData = nodes.get([nodeId]);
-                    popup.innerHTML = nodeData[0].title;
-
-                    // get the position of the node
-                    var posCanvas = network.getPositions([nodeId])[nodeId];
-
-                    // get the bounding box of the node
-                    var boundingBox = network.getBoundingBox(nodeId);
-
-                    //position tooltip:
-                    posCanvas.x = posCanvas.x + 0.5 * (boundingBox.right - boundingBox.left);
-
-                    // convert coordinates to the DOM space
-                    var posDOM = network.canvasToDOM(posCanvas);
-
-                    // Give it an offset
-                    posDOM.x += 10;
-                    posDOM.y -= 20;
-
-                    // show and place the tooltip.
-                    popup.style.display = 'block';
-                    popup.style.top = posDOM.y + 'px';
-                    popup.style.left = posDOM.x + 'px';
-                }
-            {% endif %}
-
-
-            {% if nodes|length > 100 and physics_enabled %}
-                network.on("stabilizationProgress", function(params) {
-                    document.getElementById('loadingBar').removeAttribute("style");
-                    var maxWidth = 496;
-                    var minWidth = 20;
-                    var widthFactor = params.iterations/params.total;
-                    var width = Math.max(minWidth,maxWidth * widthFactor);
-                    document.getElementById('bar').style.width = width + 'px';
-                    document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
-                });
-                network.once("stabilizationIterationsDone", function() {
-                    document.getElementById('text').innerHTML = '100%';
-                    document.getElementById('bar').style.width = '496px';
-                    document.getElementById('loadingBar').style.opacity = 0;
-                    // really clean the dom element
-                    setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
-                });
-            {% endif %}
-
-            return network;
-
-        }
-        drawGraph();
-    </script>
-  </body>
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+			crossorigin="anonymous"
+		/>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+			crossorigin="anonymous"
+		></script>
+
+		<center>
+			<h1>{{heading}}</h1>
+		</center>
+		<style type="text/css">
+
+			   #mynetwork {
+			       width: {{width}};
+			       height: {{height}};
+			       background-color: {{bgcolor}};
+			       border: 1px solid lightgray;
+			       position: relative;
+			       float: left;
+			   }
+
+			   {% if nodes|length > 100 and physics_enabled %}
+			   #loadingBar {
+			       position:absolute;
+			       top:0px;
+			       left:0px;
+			       width: {{width}};
+			       height: {{height}};
+			       background-color:rgba(200,200,200,0.8);
+			       -webkit-transition: all 0.5s ease;
+			       -moz-transition: all 0.5s ease;
+			       -ms-transition: all 0.5s ease;
+			       -o-transition: all 0.5s ease;
+			       transition: all 0.5s ease;
+			       opacity:1;
+			   }
+
+			   #bar {
+			       position:absolute;
+			       top:0px;
+			       left:0px;
+			       width:20px;
+			       height:20px;
+			       margin:auto auto auto auto;
+			       border-radius:11px;
+			       border:2px solid rgba(30,30,30,0.05);
+			       background: rgb(0, 173, 246); /* Old browsers */
+			       box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+			   }
+
+			   #border {
+			       position:absolute;
+			       top:10px;
+			       left:10px;
+			       width:500px;
+			       height:23px;
+			       margin:auto auto auto auto;
+			       box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+			       border-radius:10px;
+			   }
+
+			   #text {
+			       position:absolute;
+			       top:8px;
+			       left:530px;
+			       width:30px;
+			       height:50px;
+			       margin:auto auto auto auto;
+			       font-size:22px;
+			       color: #000000;
+			   }
+
+			   div.outerBorder {
+			       position:relative;
+			       top:400px;
+			       width:600px;
+			       height:44px;
+			       margin:auto auto auto auto;
+			       border:8px solid rgba(0,0,0,0.1);
+			       background: rgb(252,252,252); /* Old browsers */
+			       background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+			       background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+			       background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+			       background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+			       background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+			       background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+			       filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+			       border-radius:72px;
+			       box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+			   }
+			   {% endif %}
+
+			   {% if conf %}
+			   #config {
+			       float: left;
+			       width: 400px;
+			       height: 600px;
+			   }
+			   {% endif %}
+
+			   {% if tooltip_link %}
+			   /* position absolute is important and the container has to be relative or absolute as well. */
+			div.popup {
+			       position:absolute;
+			       top:0px;
+			       left:0px;
+			       display:none;
+			       background-color:#f5f4ed;
+			       -moz-border-radius: 3px;
+			       -webkit-border-radius: 3px;
+			       border-radius: 3px;
+			       border: 1px solid #808074;
+			       box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+			}
+
+			/* hide the original tooltip */
+			.vis-tooltip {
+			  display:none;
+			}
+			   {% endif %}
+		</style>
+	</head>
+
+	<body>
+		<div class="card" style="width: 100%">
+			{% if adg_visualization_type == 1 %}
+			<div id="ml-menu" class="card-header">
+				<div class="row no-gutters">
+					<div class="col-md-8">
+						<select
+							class="form-select"
+							onchange="selectDFG([value]);"
+							id="select-dfg"
+							placeholder="Select DFG..."
+						>
+							{% for dfg in dfg_files %}
+							<option value="{{ dfg }}">{{dfg}}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="col-md-4">
+						<div class="form-check form-switch">
+							<input
+								class="form-check-input"
+								type="checkbox"
+								id="utilizationCheckbox"
+								onChange="updateUtilization();"
+								checked
+							/>
+							<label
+								class="form-check-label"
+								for="utilizationCheckbox"
+							>
+								Show Utilizations
+							</label>
+						</div>
+						<div class="form-check form-switch">
+							<input
+								class="form-check-input"
+								type="checkbox"
+								onChange="updateProbability();"
+								id="probabilityCheckbox"
+							/>
+							<label
+								class="form-check-label"
+								for="probabilityCheckbox"
+							>
+								Show Probabilities
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="row no-gutters">
+					<div class="col-md-9">
+						<input
+							type="range"
+							class="form-range"
+							min="-1"
+							max="25"
+							step="1"
+							value="-1"
+							onchange="updateStep(value);"
+							id="stepRange"
+						/>
+					</div>
+					<div class="col-md-2">
+						<span class="text-center" id="stepValue">
+							Base ADG
+						</span>
+					</div>
+				</div>
+				<div class="row no-gutters">
+					<div
+						class="col-lg-2 mx-1 border bg-dark border-dark rounded"
+					>
+						<span class="text-white" id="rewardText">
+							Reward:
+						</span>
+					</div>
+					<div
+						class="col-lg-2 mx-1 border bg-dark border-dark rounded"
+					>
+						<span class="text-white" id="overprovText">
+							Overprov:
+						</span>
+					</div>
+					<div
+						class="col-lg-2 mx-1 border bg-dark border-dark rounded"
+					>
+						<span class="text-white" id="violationText">
+							Violation:
+						</span>
+					</div>
+					<div
+						class="col-lg-2 mx-1 border bg-dark border-dark rounded"
+					>
+						<span class="text-white" id="latencyText">
+							Latency:
+						</span>
+					</div>
+					<div
+						class="col-lg-2 mx-1 border bg-dark border-dark rounded"
+					>
+						<span class="text-white" id="linksText"> Links: </span>
+					</div>
+				</div>
+			</div>
+			{% endif %} {% if adg_visualization_type == 2 %}
+			<div id="ml-menu" class="card-header position-relative">
+				<div class="container">
+					<div class="d-flex w-100">
+						<!-- Left 80%: toggles and dropdowns -->
+						<div style="width: 80%">
+							<div class="row g-3">
+								<!-- Row 1 -->
+								<div class="col-12 d-flex">
+									<!-- Toggle 1 -->
+									<div
+										class="col-md-4 d-flex align-items-center"
+									>
+										<input
+											class="form-check-input me-2"
+											type="checkbox"
+											id="utilizationCheckbox"
+											onchange="updateUtilization();"
+											checked
+										/>
+										<label
+											class="form-check-label mb-0"
+											for="utilizationCheckbox"
+										>
+											Show Utilizations
+										</label>
+									</div>
+
+									<!-- Toggle 2 -->
+									<div
+										class="col-md-4 d-flex align-items-center"
+									>
+										<input
+											class="form-check-input me-2"
+											type="checkbox"
+											id="nextActionCheckbox"
+											onchange="updateNextAction();"
+											checked
+										/>
+										<label
+											class="form-check-label mb-0"
+											for="nextActionCheckbox"
+										>
+											Highlight Next Action
+										</label>
+									</div>
+
+									<!-- Dropdown 1 -->
+									<div
+										class="col-md-4 d-flex align-items-center"
+									>
+										<label
+											for="adgSelect"
+											class="form-label me-2 mb-0"
+											>ADG</label
+										>
+										<select
+											id="adgSelect"
+											class="form-select flex-grow-1"
+											onchange="onAdgSelectChange(this.value)"
+										></select>
+									</div>
+								</div>
+
+								<!-- Row 2 -->
+								<div class="col-12 d-flex">
+									<!-- Toggle 3 -->
+									<div
+										class="col-md-4 d-flex align-items-center"
+									>
+										<input
+											class="form-check-input me-2"
+											type="checkbox"
+											id="probabilityCheckbox"
+											onchange="updateProbability();"
+										/>
+										<label
+											class="form-check-label mb-0"
+											for="probabilityCheckbox"
+										>
+											Show Probabilities
+										</label>
+									</div>
+
+									<!-- Toggle 4 -->
+									<div
+										class="col-md-4 d-flex align-items-center"
+									>
+										<input
+											class="form-check-input me-2"
+											type="checkbox"
+											id="nextPredictedCheckbox"
+											onchange="updateNextPredicted();"
+											checked
+										/>
+										<label
+											class="form-check-label mb-0"
+											for="nextPredictedCheckbox"
+										>
+											Highlight Next Predicted
+										</label>
+									</div>
+
+									<!-- Dropdown 2 -->
+									<div
+										class="col-md-4 d-flex align-items-center"
+									>
+										<label
+											for="dfgSelect"
+											class="form-label me-2 mb-0"
+											>DFG</label
+										>
+										<select
+											id="dfgSelect"
+											class="form-select flex-grow-1"
+											onchange="onDfgSelectChange(this.value)"
+										></select>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Right 20%: STOP box -->
+						<div
+							class="d-flex justify-content-end align-items-center pe-3"
+							style="width: 20%"
+						>
+							<div
+								id="stop-box-container"
+								class="bg-dark border border-dark rounded p-2 d-flex flex-column align-items-center"
+								style="width: 60%; max-width: 80px"
+							>
+								<div
+									id="stop-box"
+									class="rounded mb-1"
+									style="
+										width: 100%;
+										aspect-ratio: 1 / 1;
+										background-color: red;
+									"
+								></div>
+								<div>
+									<small class="text-white fw-bold"
+										>STOP</small
+									>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="container mt-4">
+					<!-- Row with slider (70%), label (10%), and dropdown (20%) -->
+					<div class="d-flex align-items-center w-100">
+						<!-- Slider: 70% -->
+						<div style="width: 70%">
+							<input
+								type="range"
+								class="form-range"
+								min="0"
+								max="25"
+								step="1"
+								value="0"
+								onchange="updateStep(value);"
+								id="stepRange"
+							/>
+						</div>
+
+						<!-- Label: 10% -->
+						<div style="width: 10%" class="text-center">
+							<span id="stepValue" class="fw-bold">Step 0</span>
+						</div>
+
+						<!-- Dropdown: 20% -->
+						<div class="dropdown" style="width: 20%">
+							<button
+								class="btn btn-sm btn-outline-secondary dropdown-toggle w-100"
+								type="button"
+								id="utilizationDropdown"
+								data-bs-toggle="dropdown"
+								aria-expanded="false"
+							>
+								Workloads
+							</button>
+							<ul
+								class="dropdown-menu p-2"
+								style="width: 100%"
+								aria-labelledby="utilizationDropdown"
+							>
+								<li>
+									<label class="dropdown-item"
+										><input
+											type="checkbox"
+											value="0"
+											checked
+											onchange="onUtilizationChange()"
+										/>
+										0</label
+									>
+								</li>
+								<li>
+									<label class="dropdown-item"
+										><input
+											type="checkbox"
+											value="1"
+											checked
+											onchange="onUtilizationChange()"
+										/>
+										1</label
+									>
+								</li>
+								<li>
+									<label class="dropdown-item"
+										><input
+											type="checkbox"
+											value="2"
+											checked
+											onchange="onUtilizationChange()"
+										/>
+										2</label
+									>
+								</li>
+								<li>
+									<label class="dropdown-item"
+										><input
+											type="checkbox"
+											value="3"
+											checked
+											onchange="onUtilizationChange()"
+										/>
+										3</label
+									>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<!-- TEXT BOXES BELOW SLIDER -->
+				<div class="row no-gutters mt-3 justify-content-center">
+					<div
+						class="col-lg-2 mx-1 border bg-dark rounded d-flex justify-content-center align-items-center"
+						style="height: 35px"
+					>
+						<span class="text-white" id="rewardText">Reward:</span>
+					</div>
+					<div
+						class="col-lg-2 mx-1 border bg-dark rounded d-flex justify-content-center align-items-center"
+						style="height: 35px"
+					>
+						<span class="text-white" id="areaText">Area:</span>
+					</div>
+					<div
+						class="col-lg-2 mx-1 border bg-dark rounded d-flex justify-content-center align-items-center"
+						style="height: 35px"
+					>
+						<span class="text-white" id="performanceText"
+							>Performance:</span
+						>
+					</div>
+					<div
+						class="col-lg-2 mx-1 border bg-dark rounded d-flex justify-content-center align-items-center"
+						style="height: 35px"
+					>
+						<span class="text-white" id="nodesText">Nodes:</span>
+					</div>
+					<div
+						class="col-lg-2 mx-1 border bg-dark rounded d-flex justify-content-center align-items-center"
+						style="height: 35px"
+					>
+						<span class="text-white" id="linksText">Links:</span>
+					</div>
+				</div>
+			</div>
+
+			{% endif %} {% if select_menu %}
+			<div id="select-menu" class="card-header">
+				<div class="row no-gutters">
+					<div class="col-10 pb-2">
+						<select
+							class="form-select"
+							aria-label="Default select example"
+							onchange="selectNode([value]);"
+							id="select-node"
+							placeholder="Select node..."
+						>
+							<option selected>Select a Node by ID</option>
+							{% for node in nodes %}
+							<option value="{{ node.id }}">{{node.id}}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="col-2 pb-2">
+						<button
+							type="button"
+							class="btn btn-primary btn-block"
+							onclick="neighbourhoodHighlight({nodes: []});"
+						>
+							Reset Selection
+						</button>
+					</div>
+				</div>
+			</div>
+			{% endif %} {% if filter_menu %}
+			<div id="filter-menu" class="card-header">
+				<div class="row no-gutters">
+					<div class="col-3 pb-2">
+						<select
+							class="form-select"
+							aria-label="Default select example"
+							onchange="updateFilter(value, 'item')"
+							id="select-item"
+						>
+							<option value="">Select a network item</option>
+							<option value="edge">edge</option>
+							<option value="node">node</option>
+						</select>
+					</div>
+					<div class="col-3 pb-2">
+						<select
+							class="form-select"
+							aria-label="Default select example"
+							onchange="updateFilter(value, 'property')"
+							id="select-property"
+						>
+							<option value="">Select a property...</option>
+						</select>
+					</div>
+					<div class="col-3 pb-2">
+						<select
+							class="form-select"
+							aria-label="Default select example"
+							id="select-value"
+						>
+							<option value="">Select value(s)...</option>
+						</select>
+					</div>
+					<div class="col-1 pb-2">
+						<button
+							type="button"
+							class="btn btn-primary btn-block"
+							onclick="highlightFilter(filter);"
+						>
+							Filter
+						</button>
+					</div>
+					<div class="col-2 pb-2">
+						<button
+							type="button"
+							class="btn btn-primary btn-block"
+							onclick="clearFilter(true)"
+						>
+							Reset Selection
+						</button>
+					</div>
+				</div>
+			</div>
+			{% endif %}
+			<div id="mynetwork" class="card-body"></div>
+		</div>
+
+		{% if nodes|length > 100 and physics_enabled %}
+		<div id="loadingBar">
+			<div class="outerBorder">
+				<div id="text">0%</div>
+				<div id="border">
+					<div id="bar"></div>
+				</div>
+			</div>
+		</div>
+		{% endif %} {% if conf %}
+		<div id="config"></div>
+		{% endif %}
+
+		<script type="text/javascript">
+
+			    // initialize global variables.
+			    var edges;
+			    var nodes;
+			    var allNodes;
+			    var allEdges;
+			    var nodeColors;
+			    var originalNodes;
+			    var network;
+			    var container;
+			    var options, data;
+			    var filter = {
+			        item : '',
+			        property : '',
+			        value : []
+			    };
+
+			    {% if select_menu %}
+			        new TomSelect("#select-node",{
+			            create: false,
+			            sortField: {
+			                field: "text",
+			                direction: "asc"
+			            }
+			        });
+			    {%  endif %}
+
+			    {% if adg_visualization_type == 1 %}
+			      var ml_options = {
+			        dfg_file : '',
+			        showUtilization : true,
+			        showProbability : false,
+			        step : -1
+			      }
+
+			      if (window.addEventListener) {
+			          window.addEventListener('load',setDefaultValues, false); //W3C
+			      } else {
+			          window.attachEvent('onload',setDefaultValues); //IE
+			      }
+
+			      let dfg_selector = document.getElementById("select-dfg");
+			      let utilization_checkbox = document.getElementById("utilizationCheckbox");
+			      let probability_checkbox = document.getElementById("probabilityCheckbox");
+			      let next_action_checkbox = document.getElementById("nextActionCheckbox");
+			      let next_predicted_checkbox = document.getElementById("nextPredictedCheckbox");
+			      let adg_select = document.getElementById("adgSelect");
+			      let dfg_select = document.getElementById("dfgSelect");
+			      let step_slider = document.getElementById("stepRange");
+			      let step_text = document.getElementById("stepValue");
+
+
+			      let reward_text = document.getElementById("rewardText");
+			      let overprov_text = document.getElementById("overprovText");
+			      let violation_text = document.getElementById("violationText");
+			      let latency_text = document.getElementById("latencyText");
+			      let links_text = document.getElementById("linksText");
+
+
+			      function setDefaultValues() {
+			        utilization_checkbox.checked = ml_options['showUtilization'];
+			        probability_checkbox.checked = ml_options['showProbability'];
+			        step_slider.value = ml_options['step'];
+			        step_text.innerHTML = "Base ADG";
+
+			        dfg_selector.value = dfg_selector.options[dfg_selector.selectedIndex].value;
+			        ml_options['dfg_file'] = dfg_selector.value;
+
+			        setSliderMax();
+			      }
+
+			      function getMaxSteps() {
+			          return dfg_steps[ml_options['dfg_file']];
+			      }
+
+			      function setSliderMax() {
+			          max_steps = dfg_steps[ml_options['dfg_file']];
+			          if (parseInt(step_slider.value) > max_steps) {
+			              step_text.textContent = "Base ADG";
+			              step_slider.value = -1;
+			          }
+
+			          step_slider.max = dfg_steps[ml_options['dfg_file']];
+			      }
+
+			      function selectDFG(value) {
+			          if (value != ml_options['dfg_file']) {
+			              ml_options['dfg_file'] = value;
+			              setSliderMax();
+			              updateColors();
+			          }
+			      }
+
+			      function updateUtilization() {
+			          value = utilization_checkbox.checked;
+			          if (value != ml_options['showUtilization']) {
+			              ml_options['showUtilization'] = value;
+			              updateColors();
+			          }
+			      }
+
+			      function updateProbability() {
+			          value = probability_checkbox.checked;
+			          if (value != ml_options['showProbability']) {
+			              ml_options['showProbability'] = value;
+			              updateColors();
+			          }
+			      }
+
+			      function updateNextAction() {
+			          value = next_action_checkbox.checked;
+			          if (value != ml_options['showNextAction']) {
+			              ml_options['showNextAction'] = value;
+			              updateColors();
+			          }
+			      }
+
+			      function updateNextPredicted() {
+			          value = next_predicted_checkbox.checked;
+			          if (value != ml_options['showNextPredicted']) {
+			              ml_options['showNextPredicted'] = value;
+			              updateColors();
+			          }
+			      }
+
+			      function updateStep(value) {
+			          new_step = parseInt(value);
+			          if (new_step != ml_options['step']) {
+			              ml_options['step'] = new_step;
+
+			              if (new_step == -1) {
+			                  step_text.textContent = "Base ADG";
+			              } else {
+			                  step_text.textContent = "Step " + value;
+			              }
+
+			              updateColors();
+			          }
+			      }
+
+			      function updateColors() {
+			          updateText();
+			          updateEdgeColors();
+			          updateNodeColors();
+			      }
+
+			      function updateText() {
+			          dfg_file = ml_options['dfg_file'];
+			          step = ml_options['step'];
+
+			          if (step == -1 || !dfg_info[dfg_file].hasOwnProperty(step)) {
+			              reward_text.textContent = "Reward:";
+			              overprov_text.textContent = "Overprov:";
+			              violation_text.textContent = "Violation:";
+			              latency_text.textContent = "Latency:";
+			              links_text.textContent = "Links:";
+			          } else {
+			              info = dfg_info[dfg_file][step];
+
+			              if (info.hasOwnProperty('reward')) {
+			                  reward_text.textContent = "Reward: " + (+info['reward'].toFixed(2));
+			              } else {
+			                  reward_text.textContent = "Reward:";
+			              }
+
+			              if (info.hasOwnProperty('agg_overprovisioning')) {
+			                  overprov_text.textContent = "Overprov: " + (+info['agg_overprovisioning'].toFixed(2));
+			              } else {
+			                  overprov_text.textContent = "Overprov:";
+			              }
+
+			              if (info.hasOwnProperty('violation')) {
+			                  violation_text.textContent = "Violation: " + (+info['violation'].toFixed(2));
+			              } else {
+			                  violation_text.textContent = "Violation:";
+			              }
+
+			              if (info.hasOwnProperty('latency')) {
+			                  latency_text.textContent = "Latency: " + (+info['latency'].toFixed(2));
+			              } else {
+			                  latency_text.textContent = "Latency:";
+			              }
+
+			              if (info.hasOwnProperty('links_mapped')) {
+			                  links_text.textContent = "Links: " + (+info['links_mapped'].toFixed(2));
+			              } else {
+			                  links_text.textContent = "Links:";
+			              }
+			          }
+			      }
+
+			      function updateEdgeColors() {
+			          var updateEdgeArray = [];
+
+			          dfg_file = ml_options['dfg_file'];
+			          step = ml_options['step'];
+			          utilization = ml_options['showUtilization']
+
+
+			          for (let edgeId in allEdges) {
+			              if (!allEdges.hasOwnProperty(edgeId)) {
+			                  console.log("edge not found: " + edgeId);
+			                  continue;
+			              }
+
+			              if (step == -1) {
+			                  allEdges[edgeId].color = allEdges[edgeId].base_color;
+			              } else {
+			                  allEdges[edgeId].color = allEdges[edgeId].grey_color;
+
+			                  if (utilization) {
+			                      utilization_colors = allEdges[edgeId].utilization_colors[dfg_file]
+
+			                      if (utilization_colors.hasOwnProperty(step)) {
+			                          allEdges[edgeId].color = utilization_colors[step];
+			                      }
+			                  }
+			              }
+
+			              updateEdgeArray.push(allEdges[edgeId]);
+			          }
+			          edges.update(updateEdgeArray);
+			      }
+
+			      function updateNodeColors() {
+			          var updateNodeArray = [];
+
+			          dfg_file = ml_options['dfg_file'];
+			          step = ml_options['step'];
+			          utilization = ml_options['showUtilization']
+			          probabilities = ml_options['showProbability']
+
+			          for (let nodeId in allNodes) {
+			              if (!allNodes.hasOwnProperty(nodeId)) {
+			                  console.log("nodeId not found: " + nodeId);
+			                  continue;
+			              }
+
+			              if (step == -1) {
+			                  allNodes[nodeId].color = allNodes[nodeId].base_color;
+			              } else {
+			                  allNodes[nodeId].color = allNodes[nodeId].grey_color;
+
+			                  if (probabilities) {
+			                      probability_colors = allNodes[nodeId].probability_colors[dfg_file]
+
+			                      if (probability_colors.hasOwnProperty(step)) {
+			                          allNodes[nodeId].color = probability_colors[step];
+			                      }
+			                  }
+
+			                  if (utilization) {
+			                      utilization_colors = allNodes[nodeId].utilization_colors[dfg_file]
+
+			                      if (utilization_colors.hasOwnProperty(step)) {
+			                          allNodes[nodeId].color = utilization_colors[step];
+			                      }
+			                  }
+
+			                  if (allNodes[nodeId]['highlight_step'][dfg_file].hasOwnProperty(step)) {
+			                      allNodes[nodeId].color = {
+			                          background: allNodes[nodeId].color,
+			                          border: allNodes[nodeId]['highlight_step'][dfg_file][step],
+			                      }
+			                  }
+			              }
+
+
+			              updateNodeArray.push(allNodes[nodeId]);
+			          }
+			          nodes.update(updateNodeArray);
+			      }
+			    {%  endif %}
+
+
+			    {% if adg_visualization_type == 2 %}
+			      var adg_files = {{ adg_files }};
+			      var dfg_files = {{ dfg_files }};
+			      var adg_properties = {{ adg_properties }};
+			      var dse_stop_properties = {{ dse_stop_properties }};
+			      var step_properties = {{ step_properties }};
+			      var dse_options = {
+			        adgfile : adg_files[0],
+			        dfgfile : dfg_files[adg_files[0]][0],
+			        showUtilization : false,
+			        showProbability : false,
+			        showGrey : false,
+			        showNextPredicted : true,
+			        showNextAction : true,
+			        step : 0
+			      }
+
+			      var current_utilization_workloads = [0, 1, 2, 3];
+
+			      window.addEventListener('load', setDefaultValues);
+
+			      let stop_box = document.getElementById("stop-box");
+			      let stop_box_container = document.getElementById("stop-box-container");
+			      let utilization_checkbox = document.getElementById("utilizationCheckbox");
+			      let probability_checkbox = document.getElementById("probabilityCheckbox");
+			      let next_action_checkbox = document.getElementById("nextActionCheckbox");
+			      let next_predicted_checkbox = document.getElementById("nextPredictedCheckbox");
+			      let adg_select = document.getElementById("adgSelect");
+			      let dfg_select = document.getElementById("dfgSelect");
+			      let step_slider = document.getElementById("stepRange");
+			      let step_text = document.getElementById("stepValue");
+
+			      let reward_text = document.getElementById("rewardText");
+			      let area_text = document.getElementById("areaText");
+			      let performance_text = document.getElementById("performanceText");
+			      let nodes_text = document.getElementById("nodesText");
+			      let links_text = document.getElementById("linksText");
+
+			      function onUtilizationChange() {
+			        updateCurrentUtilizationWorkloads();
+			        updateGraph();
+			      }
+
+			      function updateCurrentUtilizationWorkloads() {
+			        current_utilization_workloads = [];
+			        const checkboxes = document.querySelectorAll('#utilizationDropdown + .dropdown-menu input[type="checkbox"]');
+			        checkboxes.forEach(function(checkbox) {
+			    	    if (checkbox.checked) {
+			            current_utilization_workloads.push(parseInt(checkbox.value));
+			          }
+			        });
+			      }
+
+			      function setUtilizationWorkloadDropdown(adg_file, dfg_file) {
+			        const ul = document.querySelector('#utilizationDropdown + .dropdown-menu');
+			        ul.innerHTML = ''; // Clear existing items
+			        const num_workloads = adg_properties['workloads'][adg_file][dfg_file];
+			        for (let i = 0; i < num_workloads; i++) {
+			          const li = document.createElement('li');
+			          li.innerHTML = `
+			            <label class="dropdown-item">
+			              <input type="checkbox" value="${i}" checked onchange="onUtilizationChange()" />
+			              ${i}
+			            </label>
+			          `;
+			          ul.appendChild(li);
+			        }
+			      }
+
+			      function setDefaultValues() {
+			        utilization_checkbox.checked = dse_options['showUtilization'];
+			        probability_checkbox.checked = dse_options['showProbability'];
+
+			        value = utilization_checkbox.checked;
+			        if (value != dse_options['showUtilization']) {
+			            dse_options['showUtilization'] = value;
+			        }
+			        value = probability_checkbox.checked;
+			        if (value != dse_options['showProbability']) {
+			          dse_options['showProbability'] = value;
+			        }
+			        value = next_action_checkbox.checked;
+			        if (value != dse_options['showNextAction']) {
+			          dse_options['showNextAction'] = value;
+			        }
+			        value = next_predicted_checkbox.checked;
+			        if (value != dse_options['showNextPredicted']) {
+			          dse_options['showNextPredicted'] = value;
+			        }
+
+			        adg_files.forEach(function(adg) {
+			          var option = document.createElement("option");
+			          option.value = adg;
+			          option.textContent = adg;
+			          adg_select.appendChild(option);
+			        });
+
+			        setDFGOptions();
+			        setUtilizationWorkloadDropdown(dse_options['adgfile'], dse_options['dfgfile']);
+			        updateCurrentUtilizationWorkloads();
+			        setSliderMax();
+			        updateGraph();
+			      }
+
+			      function setDFGOptions() {
+			        adg_file = dse_options['adgfile'];
+			        dfg_select.innerHTML = ''; // Clear existing options
+			        dfg_files[adg_file].forEach(function(dfg) {
+			            var option = document.createElement("option");
+			            option.value = dfg;
+			            option.textContent = dfg;
+			            dfg_select.appendChild(option);
+			        });
+			        onDfgSelectChange(dfg_files[adg_file][0]);
+			      }
+
+			      function onAdgSelectChange(value) {
+			        if (value == dse_options['adgfile']) {
+			            return; // No change
+			        }
+
+			        dse_options['adgfile'] = value;
+			        adg_select.value = value;
+
+			        var updateNodeArray = [];
+			        for (let nodeId in allNodes) {
+			            if (!allNodes.hasOwnProperty(nodeId)) {
+			                console.log("nodeId not found: " + nodeId);
+			                continue;
+			            }
+
+			            allNodes[nodeId].shape = allNodes[nodeId].shapes[value];
+			            allNodes[nodeId].size = allNodes[nodeId].sizes[value];
+			            allNodes[nodeId].name = allNodes[nodeId].names[value];
+
+			            // Reset node position
+			            delete allNodes[nodeId].x;
+			            delete allNodes[nodeId].y;
+
+			            updateNodeArray.push(allNodes[nodeId]);
+			        }
+
+			        var updateEdgeArray = [];
+			        for (let edgeId in allEdges) {
+			            if (!allEdges.hasOwnProperty(edgeId)) {
+			                console.log("edge not found: " + edgeId);
+			                continue;
+			            }
+
+			            allEdges[edgeId].name = allEdges[edgeId].names[value];
+			            allEdges[edgeId].physics = allEdges[edgeId].adg_physics[value];
+
+			            updateEdgeArray.push(allEdges[edgeId]);
+			        }
+
+			        // Update nodes and edges in the network
+			        nodes.update(updateNodeArray);
+			        edges.update(updateEdgeArray);
+
+			        console.log("ADG changed to: " + value);
+			        setDFGOptions();
+			        setSliderMax();
+			        updateGraph();
+			      }
+
+			      function onDfgSelectChange(value) {
+			        if (value == dse_options['dfgfile']) {
+			            return; // No change
+			        }
+			        dse_options['dfgfile'] = value;
+			        dfg_select.value = value;
+
+			        console.log("DFG changed to: " + value);
+			           setUtilizationWorkloadDropdown(dse_options['adgfile'], dse_options['dfgfile']);
+			        setSliderMax();
+			        updateGraph();
+			      }
+
+
+			      function setSliderMax() {
+			        const adg_file = dse_options['adgfile'];
+			        const dfg_file = dse_options['dfgfile'];
+
+			        const old_max_steps = parseInt(step_slider.max);
+			        const max_steps = step_properties[adg_file][dfg_file].steps;
+			        step_slider.max = max_steps;
+
+			        let current_step = parseInt(step_slider.value);
+			        let new_step;
+
+			        if (current_step === old_max_steps || current_step === old_max_steps - 1) {
+			            // If current step was at the end of the old range, move it to the end of the new range
+			            new_step = max_steps - 1;
+			        } else if (current_step >= max_steps) {
+			            // If current step now exceeds the new max, clamp it
+			            new_step = max_steps - 1;
+			        } else {
+			            // Otherwise, keep the current step
+			            new_step = current_step;
+			        }
+
+			        step_slider.value = new_step;
+			        step_text.textContent = `Step ${new_step}`;
+			        dse_options['step'] = new_step;
+			      }
+
+
+			      function updateStep(value) {
+			        new_step = parseInt(value);
+			        if (new_step != dse_options['step']) {
+			            dse_options['step'] = new_step;
+			            step_text.textContent = "Step " + value;
+
+			            updateGraph();
+			        }
+			      }
+
+			      function updateUtilization() {
+			        value = utilization_checkbox.checked;
+			        if (value != dse_options['showUtilization']) {
+			            dse_options['showUtilization'] = value;
+			            updateGraph();
+			        }
+			    }
+
+			    function updateProbability() {
+			        value = probability_checkbox.checked;
+			        if (value != dse_options['showProbability']) {
+			            dse_options['showProbability'] = value;
+			            updateGraph();
+			        }
+			    }
+
+			    function updateNextAction() {
+			          value = next_action_checkbox.checked;
+			          if (value != dse_options['showNextAction']) {
+			              dse_options['showNextAction'] = value;
+			              updateGraph();
+			          }
+			      }
+
+			    function updateNextPredicted() {
+			        value = next_predicted_checkbox.checked;
+			        if (value != dse_options['showNextPredicted']) {
+			            dse_options['showNextPredicted'] = value;
+			            updateGraph();
+			        }
+			    }
+
+			    function updateGraph() {
+			      updateText();
+			      updateNodes();
+			      updateEdges();
+			      updateStop();
+			    }
+
+
+			    function updateStop() {
+			      adg_file = dse_options['adgfile'];
+			      dfg_file = dse_options['dfgfile'];
+			      step = dse_options['step'];
+
+			      let color = dse_stop_properties[adg_file][dfg_file]['probability_color'][step];
+
+			      let actionVal = dse_stop_properties[adg_file][dfg_file]['action'][step];
+			      let predictedVal = dse_stop_properties[adg_file][dfg_file]['max_probability'][step];
+
+			      is_next_action = (actionVal === 'true') ? true : (actionVal === 'false') ? false : actionVal;
+			      is_next_predicted = (predictedVal === 'true') ? true : (predictedVal === 'false') ? false : predictedVal;
+
+			      stop_box.style.backgroundColor = color;
+			      if (is_next_action && is_next_predicted && showMaxProbability && showNextStep) {
+			          stop_box.style.boxShadow = `0 0 0px 5px ${adg_properties['both_highlight_color']}`;
+			      } else if (is_next_action && showNextStep) {
+			          stop_box.style.boxShadow = `0 0 0px 5px ${adg_properties['next_action_highlight_color']}`;
+			      } else if (is_next_predicted && showMaxProbability) {
+			          stop_box.style.boxShadow = `0 0 0px 5px ${adg_properties['most_likely_highlight_color']}`;
+			      } else {
+			          stop_box.style.boxShadow = "0 0 0px 0px black";
+			      }
+			    }
+
+			    function updateText() {
+			      adg_file = dse_options['adgfile'];
+			      dfg_file = dse_options['dfgfile'];
+			      step = dse_options['step'];
+			      let info = step_properties[adg_file][dfg_file];
+
+			      if (info.hasOwnProperty('reward')) {
+			          reward_text.textContent = "Reward: " + (+info['reward'][step].toFixed(2));
+			      } else {
+			          reward_text.textContent = "Reward:";
+			      }
+
+			      if (info.hasOwnProperty('area')) {
+			          area_text.textContent = "Area: " + (+info['area'][step].toFixed(2));
+			      } else {
+			        area_text.textContent = "Area:";
+			      }
+
+			      if (info.hasOwnProperty('performance')) {
+			          performance_text.textContent = "Performance: " + (+info['performance'][step].toFixed(2));
+			      } else {
+			          performance_text.textContent = "Performance:";
+			      }
+
+			      if (info.hasOwnProperty('nodes')) {
+			          nodes_text.textContent = "Nodes: " + (+info['nodes'][step].toFixed(2));
+			      } else {
+			          nodes_text.textContent = "Nodes:";
+			      }
+
+			      if (info.hasOwnProperty('links')) {
+			          links_text.textContent = "Links: " + (+info['links'][step].toFixed(2));
+			      } else {
+			          links_text.textContent = "Links:";
+			      }
+			  }
+
+			     function getNodeUtilizationColor(nodeId, adg_file, dfg_file, step) {
+			       let workload_utils = allNodes[nodeId].workload_utilizations[adg_file][dfg_file][step];
+			       let workloads_to_use = current_utilization_workloads;
+			       let total_utilization = 0;
+
+			       for (let i = 0; i < workloads_to_use.length; i++) {
+			         if (workloads_to_use[i] > workload_utils.length - 1) {
+			           continue;
+			         }
+			         total_utilization += workload_utils[workloads_to_use[i]];
+			       }
+
+			       if (total_utilization > adg_properties['utilization_colors'].length - 1) {
+			         total_utilization = adg_properties['utilization_colors'].length - 1;
+			       } else if (total_utilization < 0) {
+			         total_utilization = 0;
+			       }
+
+			       return adg_properties['utilization_colors'][total_utilization];
+			     }
+
+			     function getLinkUtilizationColor(edgeId, adg_file, dfg_file, step) {
+			       let workload_utils = allEdges[edgeId].workload_utilizations[adg_file][dfg_file][step];
+			       let workloads_to_use = current_utilization_workloads;
+			       let total_utilization = 0;
+
+			       for (let i = 0; i < workloads_to_use.length; i++) {
+			         if (workloads_to_use[i] > workload_utils.length - 1) {
+			           continue;
+			         }
+			         total_utilization += workload_utils[workloads_to_use[i]];
+			       }
+
+			       if (total_utilization > adg_properties['utilization_colors'].length - 1) {
+			         total_utilization = adg_properties['utilization_colors'].length - 1;
+			       } else if (total_utilization < 0) {
+			         total_utilization = 0;
+			       }
+
+			       return adg_properties['utilization_colors'][total_utilization];
+			     }
+
+			  function getNodeLabel(step, adg_file, dfg_file, nodeId) {
+			    probability_num = allNodes[nodeId].probability[adg_file][dfg_file][step];
+			    utilization_num = allNodes[nodeId].utilization[adg_file][dfg_file][step];
+			    rounded_probability = Math.round(probability_num * 10000) / 100;
+			    return allNodes[nodeId].names[adg_file] + "\n" + " probability " + rounded_probability + "%\n" + " utilization " + utilization_num + "\n";
+			  }
+
+			  function getEdgeLabel(adg_file, dfg_file, edgeId) {
+			    probability_num = allEdges[edgeId].probability[adg_file][dfg_file][dse_options['step']];
+			    utilization_num = allEdges[edgeId].utilization[adg_file][dfg_file][dse_options['step']];
+			    rounded_probability = Math.round(probability_num * 10000) / 100;
+			    return allEdges[edgeId].names[adg_file] + "\n" + " probability " + rounded_probability + "%\n" + " utilization " + utilization_num + "\n";
+			  }
+
+
+			  function updateNodes() {
+			    var updateNodeArray = [];
+
+			    step = dse_options['step'];
+			    adg_file = dse_options['adgfile'];
+			    dfg_file = dse_options['dfgfile'];
+			    utilization = dse_options['showUtilization'];
+			    probabilities = dse_options['showProbability'];
+			    showGrey = dse_options['showGrey'];
+			    showMaxProbability = dse_options['showNextPredicted'];
+			    showNextStep = dse_options['showNextAction'];
+
+			    for (let nodeId in allNodes) {
+			        if (!allNodes.hasOwnProperty(nodeId)) {
+			            console.log("nodeId not found: " + nodeId);
+			            continue;
+			        }
+
+			        allNodes[nodeId].hidden = allNodes[nodeId].hidden_step[adg_file][dfg_file][step];
+			        if (probabilities) {
+			          allNodes[nodeId].color = allNodes[nodeId].probability_color[adg_file][dfg_file][step];
+			        } else if (utilization) {
+			          allNodes[nodeId].color = getNodeUtilizationColor(nodeId, adg_file, dfg_file, step);
+			        } else if (showGrey) {
+			          allNodes[nodeId].color = allNodes[nodeId].grey_color;
+			        } else {
+			          allNodes[nodeId].color = allNodes[nodeId].base_colors[adg_file];
+			        }
+
+			        allNodes[nodeId].title = getNodeLabel(step, adg_file, dfg_file, nodeId);
+
+			        if (allNodes[nodeId].max_probability[adg_file][dfg_file][step] && allNodes[nodeId].action[adg_file][dfg_file][step] && showMaxProbability && showNextStep) {
+			          allNodes[nodeId].borderWidth = adg_properties['node_highlight_width'];
+			          allNodes[nodeId].color = {
+			            background: allNodes[nodeId].color,
+			            border: adg_properties['both_highlight_color'],
+			          }
+			        } else if (allNodes[nodeId].max_probability[adg_file][dfg_file][step] && showMaxProbability) {
+			          allNodes[nodeId].borderWidth = adg_properties['node_highlight_width'];
+			          allNodes[nodeId].color = {
+			            background: allNodes[nodeId].color,
+			            border: adg_properties['most_likely_highlight_color'],
+			          }
+			        } else if (allNodes[nodeId].action[adg_file][dfg_file][step] && showNextStep) {
+			          allNodes[nodeId].borderWidth = adg_properties['node_highlight_width'];
+			          allNodes[nodeId].color = {
+			            background: allNodes[nodeId].color,
+			            border: adg_properties['next_action_highlight_color'],
+			          }
+			        } else {
+			          allNodes[nodeId].borderWidth = allNodes[nodeId].base_border_width;
+			        }
+
+			        updateNodeArray.push(allNodes[nodeId]);
+			    }
+			    nodes.update(updateNodeArray);
+			}
+
+			function updateEdges() {
+			  var updateEdgeArray = [];
+
+			  step = dse_options['step'];
+			  adg_file = dse_options['adgfile'];
+			  dfg_file = dse_options['dfgfile'];
+			  utilization = dse_options['showUtilization'];
+			  probabilities = dse_options['showProbability'];
+			  showGrey = dse_options['showGrey'];
+			  showMaxProbability = dse_options['showNextPredicted'];
+			  showNextStep = dse_options['showNextAction'];
+
+
+			  for (let edgeId in allEdges) {
+			      if (!allEdges.hasOwnProperty(edgeId)) {
+			          console.log("edge not found: " + edgeId);
+			          continue;
+			      }
+			      allEdges[edgeId].hidden = allEdges[edgeId].hidden_step[adg_file][dfg_file][step];
+			      if (probabilities) {
+			        allEdges[edgeId].color = allEdges[edgeId].probability_color[adg_file][dfg_file][step];
+			      } else if (utilization) {
+			        allEdges[edgeId].color = getLinkUtilizationColor(edgeId, adg_file, dfg_file, step);
+			      } else if (showGrey) {
+			        allEdges[edgeId].color = allEdges[edgeId].grey_color;
+			      } else {
+			        allEdges[edgeId].color = allEdges[edgeId].base_colors[adg_file];
+			      }
+
+			      allEdges[edgeId].title = getEdgeLabel(adg_file, dfg_file, edgeId);
+
+			      if (allEdges[edgeId].max_probability[adg_file][dfg_file][step] && allEdges[edgeId].action[adg_file][dfg_file][step] && showMaxProbability && showNextStep) {
+			        allEdges[edgeId].width = adg_properties['link_highlight_width'];
+			        allEdges[edgeId].color = adg_properties['both_highlight_color'];
+			      } else if (allEdges[edgeId].max_probability[adg_file][dfg_file][step] && showMaxProbability) {
+			        allEdges[edgeId].width =  adg_properties['link_highlight_width'];
+			        allEdges[edgeId].color = adg_properties['most_likely_highlight_color'];
+			      } else if (allEdges[edgeId].action[adg_file][dfg_file][step] && showNextStep) {
+			        allEdges[edgeId].width =  adg_properties['link_highlight_width'];
+			        allEdges[edgeId].color = adg_properties['next_action_highlight_color'];
+			      } else {
+			        allEdges[edgeId].width = allEdges[edgeId].base_width;
+			      }
+
+			      updateEdgeArray.push(allEdges[edgeId]);
+			  }
+			  edges.update(updateEdgeArray);
+			}
+
+			    {% endif %}
+
+			    {% if filter_menu %}
+			        // explicitly using onItemAdd and this function as we need to save multiple values
+			        let updateValueFilter = function() {
+			            return function () {
+			            filter['value'].push(arguments[0])
+			            }
+			        }
+
+			        let valueControl = new TomSelect("#select-value",{
+			            maxItems: null,
+			            valueField: 'id',
+			            labelField: 'title',
+			            searchField: 'title',
+			            create: false,
+			            sortField: {
+			                field: "text",
+			                direction: "asc"
+			            },
+			            onItemAdd: updateValueFilter()
+			        });
+
+			        let addValues = function() {
+			            return function () {
+			                // clear the current value options and add the selected attribute values
+			                // tom-select handles duplicates
+			                let selectedProperty = arguments[0];
+			                valueControl.clear();
+			                valueControl.clearOptions();
+			                filter['value'] = []
+			                if (filter['item'] === 'node') {
+			                    for (let each in allNodes) {
+			                        valueControl.addOption({
+			                            id:allNodes[each][selectedProperty],
+			                            title:allNodes[each][selectedProperty]
+			                        })
+			                    }
+			                }
+			                else if (filter['item'] === 'edge') {
+			                    for (let each in allEdges) {
+			                        valueControl.addOption({
+			                            id:allEdges[each][selectedProperty],
+			                            title:allEdges[each][selectedProperty]
+			                        })
+			                    }
+			                }
+			            }
+			        };
+
+			        let propControl = new TomSelect("#select-property",{
+			            valueField: 'id',
+			            labelField: 'title',
+			            searchField: 'title',
+			            create: false,
+			            sortField: {
+			                field: "text",
+			                direction: "asc"
+			            },
+			            onItemAdd: addValues()
+			        });
+
+			        let addProperties = function() {
+			            return function () {
+			                // loops through the selected network item and adds the attributes to dropdown
+			                // tom-select handles duplicates
+			                clearFilter(false)
+			                if (arguments[0] === 'edge') {
+			                    for (let each in allEdges) {
+			                        if (allEdges.hasOwnProperty(each)) {
+			                            for (let eachProp in allEdges[each]) {
+			                                if (allEdges[each].hasOwnProperty(eachProp)) {
+			                                    propControl.addOption({id: eachProp, title: eachProp})
+			                                }
+			                            }
+			                        }
+			                    }
+			                }
+			                else if (arguments[0] === 'node') {
+			                    for (let each in allNodes) {
+			                        if (allNodes.hasOwnProperty(each)) {
+			                            for (let eachProp in allNodes[each]) {
+			                                if (allNodes[each].hasOwnProperty(eachProp)
+			                                    && (eachProp !== 'hidden' && eachProp !== 'savedLabel'
+			                                        && eachProp !== 'hiddenLabel')) {
+			                                    propControl.addOption({id: eachProp, title: eachProp})
+
+			                                }
+			                            }
+			                        }
+			                    }
+			                }
+			            }
+			        };
+
+			        let itemControl = new TomSelect("#select-item",{
+			            create: false,
+			            sortField:{
+			                field: "text",
+			                direction: "asc"
+			            },
+			            onItemAdd: addProperties()
+			        });
+
+			        function clearFilter(reset) {
+			            // utility function to clear all the selected filter options
+			            // if reset is set to true, the existing filter will be removed
+			            // else, only the dropdown options are cleared
+			            propControl.clear();
+			            propControl.clearOptions();
+			            valueControl.clear();
+			            valueControl.clearOptions();
+			            filter = {
+			                item : '',
+			                property : '',
+			                value : []
+			            }
+			            if (reset) {
+			                itemControl.clear();
+			                filterHighlight({nodes: []})
+			            }
+			        }
+
+			        function updateFilter(value, key) {
+			            // key could be 'item' or 'property' and value is as selected in dropdown
+			            filter[key] = value
+			        }
+
+			    {%  endif %}
+
+			    // This method is responsible for drawing the graph, returns the drawn network
+			    function drawGraph() {
+			        var container = document.getElementById('mynetwork');
+
+			        {% if use_DOT %}
+
+			        var DOTstring = "{{dot_lang|safe}}";
+			        var parsedData = vis.network.convertDot(DOTstring);
+
+			        data = {
+			          nodes: parsedData.nodes,
+			          edges: parsedData.edges
+			        }
+
+			        var options = parsedData.options;
+			        options.nodes = {
+			            shape: "dot"
+			        }
+
+			        {% else %}
+
+			        // parsing and collecting nodes and edges from the python
+			        nodes = new vis.DataSet({{nodes|tojson}});
+			        edges = new vis.DataSet({{edges|tojson}});
+
+			        nodeColors = {};
+			        allNodes = nodes.get({ returnType: "Object" });
+			        for (nodeId in allNodes) {
+			          nodeColors[nodeId] = allNodes[nodeId].color;
+			        }
+			        allEdges = edges.get({ returnType: "Object" });
+			        // adding nodes and edges to the graph
+			        data = {nodes: nodes, edges: edges};
+
+			        var options = {{options|safe}};
+
+			        {% endif %}
+
+
+			        {% if conf %}
+			        // if this network requires displaying the configure window,
+			        // put it in its div
+			        options.configure["container"] = document.getElementById("config");
+			        {% endif %}
+
+			        network = new vis.Network(container, data, options);
+
+			        {% if neighborhood_highlight %}
+			          network.on("click", neighbourhoodHighlight);
+			        {% endif %}
+
+			        {% if select_menu %}
+			          network.on("selectNode", neighbourhoodHighlight);
+			        {% endif %}
+
+			        {% if tooltip_link %}
+			        // make a custom popup
+			            var popup = document.createElement("div");
+			            popup.className = 'popup';
+			            popupTimeout = null;
+			            popup.addEventListener('mouseover', function () {
+			                console.log(popup)
+			                if (popupTimeout !== null) {
+			                    clearTimeout(popupTimeout);
+			                    popupTimeout = null;
+			                }
+			            });
+			            popup.addEventListener('mouseout', function () {
+			                if (popupTimeout === null) {
+			                    hidePopup();
+			                }
+			            });
+			            container.appendChild(popup);
+
+
+			            // use the popup event to show
+			            network.on("showPopup", function (params) {
+			                showPopup(params);
+			            });
+
+			            // use the hide event to hide it
+			            network.on("hidePopup", function (params) {
+			                hidePopup();
+			            });
+
+			            // hiding the popup through css
+			            function hidePopup() {
+			                popupTimeout = setTimeout(function () { popup.style.display = 'none'; }, 500);
+			            }
+
+			            // showing the popup
+			            function showPopup(nodeId) {
+			                // get the data from the vis.DataSet
+			                var nodeData = nodes.get([nodeId]);
+			                popup.innerHTML = nodeData[0].title;
+
+			                // get the position of the node
+			                var posCanvas = network.getPositions([nodeId])[nodeId];
+
+			                // get the bounding box of the node
+			                var boundingBox = network.getBoundingBox(nodeId);
+
+			                //position tooltip:
+			                posCanvas.x = posCanvas.x + 0.5 * (boundingBox.right - boundingBox.left);
+
+			                // convert coordinates to the DOM space
+			                var posDOM = network.canvasToDOM(posCanvas);
+
+			                // Give it an offset
+			                posDOM.x += 10;
+			                posDOM.y -= 20;
+
+			                // show and place the tooltip.
+			                popup.style.display = 'block';
+			                popup.style.top = posDOM.y + 'px';
+			                popup.style.left = posDOM.x + 'px';
+			            }
+			        {% endif %}
+
+
+			        {% if nodes|length > 100 and physics_enabled %}
+			            network.on("stabilizationProgress", function(params) {
+			                document.getElementById('loadingBar').removeAttribute("style");
+			                var maxWidth = 496;
+			                var minWidth = 20;
+			                var widthFactor = params.iterations/params.total;
+			                var width = Math.max(minWidth,maxWidth * widthFactor);
+			                document.getElementById('bar').style.width = width + 'px';
+			                document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+			            });
+			            network.once("stabilizationIterationsDone", function() {
+			                document.getElementById('text').innerHTML = '100%';
+			                document.getElementById('bar').style.width = '496px';
+			                document.getElementById('loadingBar').style.opacity = 0;
+			                // really clean the dom element
+			                setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+			            });
+			        {% endif %}
+
+			        return network;
+
+			    }
+			    drawGraph();
+		</script>
+	</body>
 </html>
