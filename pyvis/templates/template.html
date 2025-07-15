@@ -457,7 +457,11 @@
 							<div
 								id="stop-box-container"
 								class="bg-dark border border-dark rounded p-2 d-flex flex-column align-items-center"
-								style="width: 60%; max-width: 80px"
+								style="
+									width: 60%;
+									max-width: 80px;
+									position: relative;
+								"
 							>
 								<div
 									id="stop-box"
@@ -472,6 +476,26 @@
 									<small class="text-white fw-bold"
 										>STOP</small
 									>
+								</div>
+								<div
+									id="stop-tooltip"
+									style="
+										position: absolute;
+										top: 0;
+										left: 0;
+										background-color: white;
+										color: black;
+										padding: 4px 8px;
+										border-radius: 6px;
+										font-size: 12px;
+										white-space: nowrap;
+										box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+										display: none;
+										z-index: 1000;
+										pointer-events: none;
+									"
+								>
+									Probability: 0%
 								</div>
 							</div>
 						</div>
@@ -1000,6 +1024,7 @@
 
 			      let stop_box = document.getElementById("stop-box");
 			      let stop_box_container = document.getElementById("stop-box-container");
+			      let stop_box_tooltip = document.getElementById("stop-tooltip");
 			      let utilization_checkbox = document.getElementById("utilizationCheckbox");
 			      let probability_checkbox = document.getElementById("probabilityCheckbox");
 			      let next_action_checkbox = document.getElementById("nextActionCheckbox");
@@ -1044,6 +1069,7 @@
 			          `;
 			          ul.appendChild(li);
 			        }
+					updateCurrentUtilizationWorkloads();
 			      }
 
 			      function setDefaultValues() {
@@ -1079,6 +1105,14 @@
 			        updateCurrentUtilizationWorkloads();
 			        setSliderMax();
 			        updateGraph();
+
+					stop_box.addEventListener('mouseenter', () => {
+						stop_box_tooltip.style.display = 'block';
+					});
+					stop_box.addEventListener('mouseleave', () => {
+						stop_box_tooltip.style.display = 'none';
+					});
+
 			      }
 
 			      function setDFGOptions() {
@@ -1240,6 +1274,8 @@
 			      step = dse_options['step'];
 
 			      let color = dse_stop_properties[adg_file][dfg_file]['probability_color'][step];
+			      let probabilityVal = dse_stop_properties[adg_file][dfg_file]['probability'][step];
+				  let roundedProbabilityVal = Math.round(probabilityVal * 10000) / 100;
 
 			      let actionVal = dse_stop_properties[adg_file][dfg_file]['action'][step];
 			      let predictedVal = dse_stop_properties[adg_file][dfg_file]['max_probability'][step];
@@ -1248,6 +1284,23 @@
 			      is_next_predicted = (predictedVal === 'true') ? true : (predictedVal === 'false') ? false : predictedVal;
 
 			      stop_box.style.backgroundColor = color;
+				  stop_box_tooltip.textContent = `Probability: ${roundedProbabilityVal}%`;
+				  console.log(`Stop box updated: color=${color}, probability=${roundedProbabilityVal}%, action=${is_next_action}, predicted=${is_next_predicted}`);
+
+			      if (dse_options['showUtilization']) {
+			          stop_box.style.borderColor = getNodeUtilizationColor('stop', adg_file, dfg_file, step);
+			      } else {
+			          stop_box.style.borderColor = adg_properties['stop_color'];
+			      }
+
+			      if (dse_options['showProbability']) {
+			          stop_box.textContent = roundedProbabilityVal + "%";
+			      } else {
+			          stop_box.textContent = "";
+			      }
+				  //stop_box.title = `Probability: ${roundedProbabilityVal}%`;
+				  //stop_box_container.title = `Probability: ${roundedProbabilityVal}%`;
+
 			      if (is_next_action && is_next_predicted && showMaxProbability && showNextStep) {
 			          stop_box.style.boxShadow = `0 0 0px 5px ${adg_properties['both_highlight_color']}`;
 			      } else if (is_next_action && showNextStep) {
@@ -1294,12 +1347,12 @@
 			      } else {
 			          links_text.textContent = "Links:";
 			      }
-			  }
+			  	}
 
-			     function getNodeUtilizationColor(nodeId, adg_file, dfg_file, step) {
-			       let workload_utils = allNodes[nodeId].workload_utilizations[adg_file][dfg_file][step];
-			       let workloads_to_use = current_utilization_workloads;
-			       let total_utilization = 0;
+			    function getNodeUtilizationColor(nodeId, adg_file, dfg_file, step) {
+			      let workload_utils = allNodes[nodeId].workload_utilizations[adg_file][dfg_file][step];
+			      let workloads_to_use = current_utilization_workloads;
+			      let total_utilization = 0;
 
 			       for (let i = 0; i < workloads_to_use.length; i++) {
 			         if (workloads_to_use[i] > workload_utils.length - 1) {
@@ -1340,16 +1393,45 @@
 
 			  function getNodeLabel(step, adg_file, dfg_file, nodeId) {
 			    probability_num = allNodes[nodeId].probability[adg_file][dfg_file][step];
-			    utilization_num = allNodes[nodeId].utilization[adg_file][dfg_file][step];
 			    rounded_probability = Math.round(probability_num * 10000) / 100;
-			    return allNodes[nodeId].names[adg_file] + "\n" + " probability " + rounded_probability + "%\n" + " utilization " + utilization_num + "\n";
+
+				const num_workloads = adg_properties['workloads'][adg_file][dfg_file];
+				let workload_utils = allNodes[nodeId].workload_utilizations[adg_file][dfg_file][step];
+
+				let total_utilization_num = 0;
+				let per_workload_utilization_num = [];
+
+				for (let i = 0; i < num_workloads; i++) {
+					if (i < workload_utils.length) {
+						per_workload_utilization_num.push(workload_utils[i]);
+						total_utilization_num += workload_utils[i];
+					} else {
+						per_workload_utilization_num.push(0);
+					}
+				}
+
+			    return allNodes[nodeId].names[adg_file] + "\n" + " probability " + rounded_probability + "%\n" + " utilization " + total_utilization_num + " [ " + per_workload_utilization_num.join(", ") + " ]\n";
 			  }
 
 			  function getEdgeLabel(adg_file, dfg_file, edgeId) {
 			    probability_num = allEdges[edgeId].probability[adg_file][dfg_file][dse_options['step']];
-			    utilization_num = allEdges[edgeId].utilization[adg_file][dfg_file][dse_options['step']];
 			    rounded_probability = Math.round(probability_num * 10000) / 100;
-			    return allEdges[edgeId].names[adg_file] + "\n" + " probability " + rounded_probability + "%\n" + " utilization " + utilization_num + "\n";
+
+				const num_workloads = adg_properties['workloads'][adg_file][dfg_file];
+				let workload_utils = allEdges[edgeId].workload_utilizations[adg_file][dfg_file][dse_options['step']];
+				let total_utilization_num = 0;
+				let per_workload_utilization_num = [];
+
+				for (let i = 0; i < num_workloads; i++) {
+					if (i < workload_utils.length) {
+						per_workload_utilization_num.push(workload_utils[i]);
+						total_utilization_num += workload_utils[i];
+					} else {
+						per_workload_utilization_num.push(0);
+					}
+				}
+
+			    return allEdges[edgeId].names[adg_file] + "\n" + " probability " + rounded_probability + "%\n" + " utilization " + total_utilization_num + " [ " + per_workload_utilization_num.join(", ") + " ]\n";
 			  }
 
 
